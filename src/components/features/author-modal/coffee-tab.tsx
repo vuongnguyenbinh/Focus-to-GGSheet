@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Copy, Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const BANK_INFO = {
   bank: 'Techcombank',
@@ -12,6 +13,7 @@ const BANK_INFO = {
  * Coffee tab - QR code and bank transfer information
  */
 export function CoffeeTab() {
+  const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
   const [qrError, setQrError] = useState(false)
 
@@ -29,10 +31,7 @@ export function CoffeeTab() {
     <div className="text-center py-2 space-y-4">
       {/* Thank you message */}
       <div>
-        <p className="text-sm font-medium">Cảm ơn bạn đã sử dụng extension!</p>
-        <p className="text-xs text-[var(--text-secondary)] italic mt-0.5">
-          Thank you for using this tool!
-        </p>
+        <p className="text-sm font-medium">{t('author.thankYou')}</p>
       </div>
 
       {/* QR Code - larger size */}
@@ -40,13 +39,13 @@ export function CoffeeTab() {
         {!qrError ? (
           <img
             src={BANK_INFO.qrUrl}
-            alt="QR Mời cà phê"
+            alt="QR"
             className="w-56 h-56"
             onError={() => setQrError(true)}
           />
         ) : (
           <div className="w-56 h-56 flex items-center justify-center bg-gray-100 rounded text-sm text-gray-500">
-            QR không khả dụng
+            {t('author.qrUnavailable')}
           </div>
         )}
       </div>
@@ -54,16 +53,16 @@ export function CoffeeTab() {
       {/* Bank details */}
       <div className="text-sm space-y-1.5">
         <p>
-          <span className="text-[var(--text-secondary)]">Ngân hàng:</span>{' '}
+          <span className="text-[var(--text-secondary)]">{t('author.bank')}:</span>{' '}
           <span className="font-medium">{BANK_INFO.bank}</span>
         </p>
         <p className="flex items-center justify-center gap-2">
-          <span className="text-[var(--text-secondary)]">Số TK:</span>{' '}
+          <span className="text-[var(--text-secondary)]">{t('author.accountNumber')}:</span>{' '}
           <span className="font-medium font-mono">{BANK_INFO.accountNumber}</span>
           <button
             onClick={handleCopyAccount}
             className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            title="Sao chép số tài khoản"
+            title={copied ? t('author.copied') : t('author.copy')}
           >
             {copied ? (
               <Check className="w-3.5 h-3.5 text-green-500" />
@@ -73,7 +72,7 @@ export function CoffeeTab() {
           </button>
         </p>
         <p>
-          <span className="text-[var(--text-secondary)]">Nội dung:</span>{' '}
+          <span className="text-[var(--text-secondary)]">{t('author.content')}:</span>{' '}
           <span className="font-medium">{BANK_INFO.content}</span>
         </p>
       </div>

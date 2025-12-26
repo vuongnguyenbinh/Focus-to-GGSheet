@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { X, Info, Coffee, MessageCircle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { AuthorModalTab } from '@/types'
 import { IntroTab } from './intro-tab'
 import { CoffeeTab } from './coffee-tab'
@@ -12,10 +13,10 @@ interface AuthorModalProps {
   defaultTab?: AuthorModalTab
 }
 
-const tabs: { id: AuthorModalTab; label: string; labelEn: string; icon: typeof Info }[] = [
-  { id: 'intro', label: 'Giới thiệu', labelEn: 'About', icon: Info },
-  { id: 'coffee', label: 'Mời cà phê', labelEn: 'Coffee', icon: Coffee },
-  { id: 'request', label: 'Yêu cầu', labelEn: 'Request', icon: MessageCircle },
+const tabConfig: { id: AuthorModalTab; labelKey: string; icon: typeof Info }[] = [
+  { id: 'intro', labelKey: 'footer.about', icon: Info },
+  { id: 'coffee', labelKey: 'footer.coffee', icon: Coffee },
+  { id: 'request', labelKey: 'footer.request', icon: MessageCircle },
 ]
 
 /**
@@ -23,6 +24,7 @@ const tabs: { id: AuthorModalTab; label: string; labelEn: string; icon: typeof I
  * Tabs: Introduction | Coffee invitation | Feature request
  */
 export function AuthorModal({ isOpen, onClose, defaultTab = 'intro' }: AuthorModalProps) {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<AuthorModalTab>(defaultTab)
 
   // Sync activeTab when defaultTab changes (when opening from different sources)
@@ -76,7 +78,7 @@ export function AuthorModal({ isOpen, onClose, defaultTab = 'intro' }: AuthorMod
         >
           {/* Header with close button */}
           <div className="flex items-center justify-between px-4 pt-4 pb-2">
-            <h2 className="text-lg font-semibold">Binh Vuong AI Marketing</h2>
+            <h2 className="text-lg font-semibold">{t('author.title')}</h2>
             <button
               onClick={onClose}
               className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -87,7 +89,7 @@ export function AuthorModal({ isOpen, onClose, defaultTab = 'intro' }: AuthorMod
 
           {/* Tab navigation */}
           <div className="flex border-b border-[var(--border-color)]">
-            {tabs.map((tab) => {
+            {tabConfig.map((tab) => {
               const Icon = tab.icon
               const isActive = activeTab === tab.id
               return (
@@ -104,7 +106,7 @@ export function AuthorModal({ isOpen, onClose, defaultTab = 'intro' }: AuthorMod
                   `}
                 >
                   <Icon className="w-3.5 h-3.5" />
-                  <span>{tab.label}</span>
+                  <span>{t(tab.labelKey)}</span>
                 </button>
               )
             })}

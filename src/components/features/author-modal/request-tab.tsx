@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Input } from '@/components/shared'
 import { Button } from '@/components/shared/button'
 import { useToast } from '@/stores/toast-context'
@@ -15,6 +16,7 @@ interface RequestTabProps {
  * Feature request form with webhook submission
  */
 export function RequestTab({ onClose }: RequestTabProps) {
+  const { t } = useTranslation()
   const toast = useToast()
   const [form, setForm] = useState({
     name: '',
@@ -29,9 +31,9 @@ export function RequestTab({ onClose }: RequestTabProps) {
   const validate = () => {
     const newErrors: { email?: string } = {}
     if (!form.email.trim()) {
-      newErrors.email = 'Email là bắt buộc / Email is required'
+      newErrors.email = t('request.emailRequired')
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = 'Email không hợp lệ / Invalid email'
+      newErrors.email = t('request.emailInvalid')
     }
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -61,14 +63,14 @@ export function RequestTab({ onClose }: RequestTabProps) {
       if (!response.ok) throw new Error('Failed')
 
       setShowSuccess(true)
-      toast.success('Đã gửi thành công!')
+      toast.success(t('toast.requestSent'))
 
       setTimeout(() => {
         onClose()
       }, 2000)
     } catch (error) {
       console.error('Webhook error:', error)
-      toast.error('Không thể gửi. Vui lòng thử lại.')
+      toast.error(t('request.error'))
     } finally {
       setIsSubmitting(false)
     }
@@ -81,9 +83,9 @@ export function RequestTab({ onClose }: RequestTabProps) {
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
           <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
         </div>
-        <p className="font-medium">Cảm ơn bạn!</p>
+        <p className="font-medium">{t('request.success')}</p>
         <p className="text-sm text-[var(--text-secondary)] mt-1">
-          Thank you for your feedback!
+          {t('request.successMessage')}
         </p>
       </div>
     )
@@ -93,45 +95,44 @@ export function RequestTab({ onClose }: RequestTabProps) {
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Header */}
       <div className="text-center mb-4">
-        <p className="text-sm font-medium">Yêu cầu tính năng</p>
-        <p className="text-xs text-[var(--text-secondary)] italic">Feature Request</p>
+        <p className="text-sm font-medium">{t('request.title')}</p>
       </div>
 
       {/* Form fields */}
       <Input
-        label="Tên / Name"
+        label={t('request.name')}
         type="text"
         value={form.name}
         onChange={(e) => setForm({ ...form, name: e.target.value })}
-        placeholder="Nguyễn Văn A"
+        placeholder={t('request.namePlaceholder')}
       />
 
       <Input
-        label="Email *"
+        label={`${t('request.email')} *`}
         type="email"
         value={form.email}
         onChange={(e) => setForm({ ...form, email: e.target.value })}
         error={errors.email}
-        placeholder="email@example.com"
+        placeholder={t('request.emailPlaceholder')}
       />
 
       <Input
-        label="Điện thoại / Phone"
+        label={t('request.phone')}
         type="tel"
         value={form.phone}
         onChange={(e) => setForm({ ...form, phone: e.target.value })}
-        placeholder="0912345678"
+        placeholder={t('request.phonePlaceholder')}
       />
 
       <div>
         <label className="block text-sm font-medium mb-1.5">
-          Nội dung / Message
+          {t('request.message')}
         </label>
         <textarea
           value={form.message}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
           className="w-full h-24 px-3 py-2 rounded-lg border bg-[var(--bg-secondary)] border-[var(--border-color)] focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none transition-colors text-sm resize-none"
-          placeholder="Mô tả tính năng bạn muốn... / Describe the feature you want..."
+          placeholder={t('request.messagePlaceholder')}
         />
       </div>
 
@@ -143,7 +144,7 @@ export function RequestTab({ onClose }: RequestTabProps) {
         loading={isSubmitting}
         disabled={isSubmitting}
       >
-        Gửi / Submit
+        {isSubmitting ? t('request.submitting') : t('request.submit')}
       </Button>
     </form>
   )
