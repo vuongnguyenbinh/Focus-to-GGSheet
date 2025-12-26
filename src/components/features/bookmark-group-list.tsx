@@ -252,7 +252,16 @@ interface BookmarkRowProps {
 function BookmarkRow({ bookmark, tags, onEdit, onDelete, onClick }: BookmarkRowProps) {
   const { t } = useTranslation()
   const itemTags = tags.filter((t) => bookmark.tags.includes(t.id))
-  const hostname = bookmark.url ? new URL(bookmark.url).hostname : null
+
+  // Safely parse URL hostname
+  let hostname: string | null = null
+  if (bookmark.url) {
+    try {
+      hostname = new URL(bookmark.url).hostname
+    } catch {
+      // Invalid URL, keep hostname as null
+    }
+  }
 
   return (
     <div

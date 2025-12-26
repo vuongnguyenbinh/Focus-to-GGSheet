@@ -29,6 +29,16 @@ const priorityColors: Record<Priority, string> = {
   low: '#10B981',
 }
 
+/** Safely extract hostname from URL, returns null if invalid */
+function getHostname(url: string | undefined): string | null {
+  if (!url) return null
+  try {
+    return new URL(url).hostname
+  } catch {
+    return null
+  }
+}
+
 type PriorityLabelKey = 'tasks.priorityHigh' | 'tasks.priorityMedium' | 'tasks.priorityLow'
 
 const priorityLabelKeys: Record<Priority, PriorityLabelKey> = {
@@ -142,7 +152,7 @@ export function ItemCard({
           </div>
 
           {/* URL for bookmarks - show prominently */}
-          {item.type === 'bookmark' && item.url && (
+          {item.type === 'bookmark' && item.url && getHostname(item.url) && (
             <a
               href={item.url}
               target="_blank"
@@ -151,7 +161,7 @@ export function ItemCard({
               className="mt-1 flex items-center gap-1 text-xs text-brand hover:underline"
             >
               <ExternalLink className="w-3 h-3 flex-shrink-0" />
-              <span className="truncate">{new URL(item.url).hostname}</span>
+              <span className="truncate">{getHostname(item.url)}</span>
             </a>
           )}
 
