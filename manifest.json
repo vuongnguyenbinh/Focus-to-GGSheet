@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Notion Sidebar",
+  "name": "Focus to Notion",
   "version": "1.0.0",
-  "description": "Quản lý công việc, dấu trang và ghi chú với Notion sync",
+  "description": "Stay focused while browsing and save everything to Notion",
   "permissions": [
     "sidePanel",
     "storage",

@@ -1,6 +1,8 @@
-# Notion Sidebar - Chrome Extension
+# Focus to Notion - Chrome Extension
 
-Tiện ích mở rộng Chrome giúp ghi chú nhanh, quản lý công việc và đồng bộ với Notion.
+Stay focused while browsing and save everything to Notion.
+
+> Tiện ích mở rộng Chrome giúp bạn tập trung làm việc trên trình duyệt và lưu trữ mọi thứ vào Notion.
 
 ## Tính năng
 
@@ -42,7 +44,7 @@ Sau khi build xong, thư mục `dist/` sẽ chứa extension.
 ### Bước 3: Mở Sidebar
 
 - **Cách 1**: Click vào icon extension trên toolbar
-- **Cách 2**: Click chuột phải vào trang web → "Open Notion Sidebar"
+- **Cách 2**: Click chuột phải vào trang web → "Open Focus to Notion"
 
 ---
 
@@ -100,7 +102,7 @@ Sau khi build xong, thư mục `dist/` sẽ chứa extension.
 
 1. Truy cập: https://www.notion.so/my-integrations
 2. Click **+ New integration**
-3. Đặt tên: "Notion Sidebar"
+3. Đặt tên: "Focus to Notion"
 4. Chọn workspace bạn muốn dùng
 5. Click **Submit**
 6. Sao chép **Internal Integration Token** (bắt đầu bằng `secret_`)
@@ -127,7 +129,7 @@ Sau khi build xong, thư mục `dist/` sẽ chứa extension.
 
 1. Mở database vừa tạo
 2. Click **⋯** (góc trên phải) → **Connections**
-3. Tìm và chọn integration "Notion Sidebar"
+3. Tìm và chọn integration "Focus to Notion"
 4. Xác nhận chia sẻ
 
 ### Bước 4: Lấy Database ID

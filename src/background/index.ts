@@ -1,5 +1,5 @@
 /**
- * Background service worker for Notion Sidebar extension
+ * Background service worker for Focus to Notion extension
  * Handles periodic sync and message passing
  */
 

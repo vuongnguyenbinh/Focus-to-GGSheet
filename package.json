@@ -1,5 +1,5 @@
 {
-  "name": "notionex",
+  "name": "focus-to-notion",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -19,7 +19,7 @@
   ],
   "author": "Binh Vuong AI Marketing",
   "license": "MIT",
-  "description": "Quản lý công việc, dấu trang và ghi chú với Notion sync",
+  "description": "Stay focused while browsing and save everything to Notion",
   "dependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.54.0",
     "dexie": "^4.2.1",

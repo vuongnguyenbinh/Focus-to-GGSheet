@@ -5,7 +5,7 @@ import { Button } from '@/components/shared/button'
 import { useToast } from '@/stores/toast-context'
 import type { FeatureRequestPayload } from '@/types'
 
-const WEBHOOK_URL = 'https://auto.binhvuong.vn/webhook-test/extensionNE'
+const WEBHOOK_URL = 'https://auto.binhvuong.vn/webhook/extensionNE'
 
 interface RequestTabProps {
   onClose: () => void

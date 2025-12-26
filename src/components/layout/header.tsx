@@ -19,7 +19,7 @@ export function Header({ isSyncing, onSync, onOpenAuthorModal }: HeaderProps) {
           alt="Logo"
           className="w-6 h-6"
         />
-        <span className="text-sm font-bold">Notion Sidebar</span>
+        <span className="text-sm font-bold">Focus to Notion</span>
       </div>
       <div className="flex items-center gap-1">
         <button

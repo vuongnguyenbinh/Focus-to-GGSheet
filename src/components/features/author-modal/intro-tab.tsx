@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { Globe, Mail, Copy, Check } from 'lucide-react'
+import { Globe, Mail, Copy, Check, Facebook, BookOpen } from 'lucide-react'
 
 const AUTHOR_INFO = {
   name: 'Bình Vương',
   website: 'https://binhvuong.vn',
   email: 'contact@binhvuong.vn',
+  facebook: 'https://www.facebook.com/vuongnguyenbinh88/',
+  userGuide: 'https://binhvuong.vn/notion-sidebar',
 }
 
 const BANK_INFO = {
@@ -163,6 +165,24 @@ export function IntroTab() {
           >
             <Mail className="w-4 h-4" />
             <span>{AUTHOR_INFO.email}</span>
+          </a>
+          <a
+            href={AUTHOR_INFO.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-brand transition-colors"
+          >
+            <Facebook className="w-4 h-4" />
+            <span>Facebook</span>
+          </a>
+          <a
+            href={AUTHOR_INFO.userGuide}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-brand transition-colors"
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>User Guide / Hướng dẫn</span>
           </a>
         </div>
       </section>
