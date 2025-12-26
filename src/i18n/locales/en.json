@@ -51,7 +51,8 @@
     "contact": "Contact",
     "facebook": "Facebook",
     "userGuide": "User Guide",
-    "requestHint": "Have a feature idea? Switch to the Request tab to send it to the author."
+    "requestHint": "Have a feature idea? Switch to the Request tab to send it to the author.",
+    "coffeeContent": "Buy Binh Vuong Coffee"
   },
   "request": {
     "title": "Feature Request",
@@ -363,5 +364,9 @@
     "openSidebar": "Open Sidebar",
     "syncNow": "Sync now",
     "settings": "Settings"
+  },
+  "journal": {
+    "title": "Activity Log",
+    "comingSoon": "(Will display sync history)"
   }
 }

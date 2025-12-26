@@ -51,7 +51,8 @@
     "contact": "Liên hệ",
     "facebook": "Facebook",
     "userGuide": "Hướng dẫn sử dụng",
-    "requestHint": "Có ý tưởng tính năng mới? Chuyển sang tab Yêu cầu để gửi cho tác giả."
+    "requestHint": "Có ý tưởng tính năng mới? Chuyển sang tab Yêu cầu để gửi cho tác giả.",
+    "coffeeContent": "Mời Bình Vương Cafe"
   },
   "request": {
     "title": "Yêu cầu tính năng",
@@ -363,5 +364,9 @@
     "openSidebar": "Mở Sidebar",
     "syncNow": "Đồng bộ ngay",
     "settings": "Cài đặt"
+  },
+  "journal": {
+    "title": "Nhật ký hoạt động",
+    "comingSoon": "(Sẽ hiển thị lịch sử đồng bộ)"
   }
 }

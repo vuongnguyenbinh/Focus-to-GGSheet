@@ -73,7 +73,7 @@ export function CoffeeTab() {
         </p>
         <p>
           <span className="text-[var(--text-secondary)]">{t('author.content')}:</span>{' '}
-          <span className="font-medium">{BANK_INFO.content}</span>
+          <span className="font-medium">{t('author.coffeeContent')}</span>
         </p>
       </div>
     </div>

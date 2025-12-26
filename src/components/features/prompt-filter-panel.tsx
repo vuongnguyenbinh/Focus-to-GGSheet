@@ -5,6 +5,7 @@
 
 import { useState } from 'react'
 import { Filter, X, ChevronDown, ChevronUp, Tag as TagIcon, FolderOpen, CheckCircle, Star } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Tag } from '@/components/shared'
 import type { PromptFilterState } from '@/types'
 
@@ -21,6 +22,7 @@ export function PromptFilterPanel({
   tags,
   onChange,
 }: PromptFilterPanelProps) {
+  const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
 
   // Count active filters
@@ -69,7 +71,7 @@ export function PromptFilterPanel({
       >
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-[var(--text-secondary)]" />
-          <span className="font-medium">Bộ lọc</span>
+          <span className="font-medium">{t('filter.title')}</span>
           {activeFilterCount > 0 && (
             <span className="px-1.5 py-0.5 text-[10px] bg-brand text-white rounded-full">
               {activeFilterCount}
@@ -93,14 +95,14 @@ export function PromptFilterPanel({
               className="flex items-center gap-1 text-xs text-error hover:underline"
             >
               <X className="w-3 h-3" />
-              Xóa tất cả bộ lọc
+              {t('filter.clearAll')}
             </button>
           )}
 
           {/* Status filters */}
           <div>
             <label className="text-xs font-medium text-[var(--text-secondary)] mb-1.5 block">
-              Trạng thái
+              {t('filter.status')}
             </label>
             <div className="flex gap-1">
               {/* Approved filter */}
@@ -115,7 +117,7 @@ export function PromptFilterPanel({
                 `}
               >
                 <CheckCircle className="w-3 h-3" />
-                Đã duyệt
+                {t('promptForm.approved')}
               </button>
 
               {/* Favorite filter */}
@@ -130,7 +132,7 @@ export function PromptFilterPanel({
                 `}
               >
                 <Star className={`w-3 h-3 ${filter.favorite === true ? 'fill-current' : ''}`} />
-                Yêu thích
+                {t('prompts.favorite')}
               </button>
             </div>
           </div>
@@ -140,7 +142,7 @@ export function PromptFilterPanel({
             <div>
               <label className="text-xs font-medium text-[var(--text-secondary)] mb-1.5 flex items-center gap-1">
                 <FolderOpen className="w-3 h-3" />
-                Danh mục
+                {t('filter.category')}
               </label>
               <div className="flex flex-wrap gap-1">
                 <button
@@ -153,7 +155,7 @@ export function PromptFilterPanel({
                     }
                   `}
                 >
-                  Tất cả
+                  {t('common.all')}
                 </button>
                 {categories.map((category) => (
                   <button
@@ -179,7 +181,7 @@ export function PromptFilterPanel({
             <div>
               <label className="text-xs font-medium text-[var(--text-secondary)] mb-1.5 flex items-center gap-1">
                 <TagIcon className="w-3 h-3" />
-                Nhãn
+                {t('filter.tags')}
               </label>
               <div className="flex flex-wrap gap-1">
                 {tags.map((tag) => (
@@ -204,7 +206,7 @@ export function PromptFilterPanel({
           {/* Empty state */}
           {categories.length === 0 && tags.length === 0 && (
             <p className="text-xs text-[var(--text-secondary)] text-center py-2">
-              Chưa có danh mục hoặc nhãn nào
+              {t('filter.noFilters')}
             </p>
           )}
         </div>

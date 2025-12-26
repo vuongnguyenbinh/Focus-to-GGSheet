@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Plus } from 'lucide-react'
-import { I18nextProvider } from 'react-i18next'
+import { I18nextProvider, useTranslation } from 'react-i18next'
 import i18n, { initI18n } from '@/i18n'
 import { ThemeProvider } from '@/stores/theme-context'
 import { ToastProvider, useToast } from '@/stores/toast-context'
@@ -33,6 +33,7 @@ import type {
 } from '@/types'
 
 function SidePanelContent() {
+  const { t } = useTranslation()
   // Module state
   const [activeModule, setActiveModule] = useState<ModuleTab>('items')
 
@@ -289,8 +290,8 @@ function SidePanelContent() {
             {footerTab === 'analytics' && <AnalyticsPanel />}
             {footerTab === 'logs' && (
               <div className="p-4 text-center text-[var(--text-secondary)]">
-                <p className="text-sm">Nhật ký hoạt động</p>
-                <p className="text-xs mt-2">(Sẽ hiển thị lịch sử đồng bộ)</p>
+                <p className="text-sm">{t('footer.journal')}</p>
+                <p className="text-xs mt-2">{t('journal.comingSoon')}</p>
               </div>
             )}
             {footerTab === 'settings' && (
