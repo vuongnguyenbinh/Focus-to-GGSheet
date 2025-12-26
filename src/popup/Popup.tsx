@@ -57,7 +57,7 @@ function PopupContent() {
       {/* Header */}
       <div className="flex items-center gap-2 p-3 border-b border-[var(--border-color)]">
         <img src={chrome.runtime.getURL('icons/icon-32.png')} alt="Logo" className="w-6 h-6" />
-        <span className="text-sm font-bold">Focus to Notion</span>
+        <span className="text-sm font-bold">{t('app.name')}</span>
       </div>
 
       {/* Status */}

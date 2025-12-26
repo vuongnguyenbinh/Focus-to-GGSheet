@@ -1,4 +1,5 @@
 import { BarChart2, ClipboardList, Settings, Coffee, MessageCircle, Info } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { FooterTab, AuthorModalTab } from '@/types'
 
 interface FooterTabBarProps {
@@ -7,18 +8,20 @@ interface FooterTabBarProps {
   onOpenAuthorModal?: (tab: AuthorModalTab) => void
 }
 
-const tabs: { id: FooterTab; label: string; icon: typeof BarChart2 }[] = [
-  { id: 'analytics', label: 'Thống kê', icon: BarChart2 },
-  { id: 'logs', label: 'Nhật ký', icon: ClipboardList },
-  { id: 'settings', label: 'Cài đặt', icon: Settings },
+const tabConfig: { id: FooterTab; labelKey: string; icon: typeof BarChart2 }[] = [
+  { id: 'analytics', labelKey: 'footer.analytics', icon: BarChart2 },
+  { id: 'logs', labelKey: 'footer.journal', icon: ClipboardList },
+  { id: 'settings', labelKey: 'footer.settings', icon: Settings },
 ]
 
 export function FooterTabBar({ activeTab, onTabChange, onOpenAuthorModal }: FooterTabBarProps) {
+  const { t } = useTranslation()
+
   return (
     <footer className="border-t border-[var(--border-color)] bg-[var(--bg-secondary)]">
       {/* Footer tabs */}
       <nav className="flex">
-        {tabs.map((tab) => {
+        {tabConfig.map((tab) => {
           const Icon = tab.icon
           const isActive = activeTab === tab.id
           return (
@@ -35,7 +38,7 @@ export function FooterTabBar({ activeTab, onTabChange, onOpenAuthorModal }: Foot
               `}
             >
               <Icon className="w-4 h-4" />
-              <span>{tab.label}</span>
+              <span>{t(tab.labelKey)}</span>
             </button>
           )
         })}
@@ -49,28 +52,28 @@ export function FooterTabBar({ activeTab, onTabChange, onOpenAuthorModal }: Foot
             className="flex items-center gap-1 text-[10px] text-[var(--text-secondary)] hover:text-brand transition-colors"
           >
             <Coffee className="w-3 h-3" />
-            <span>Mời cà phê</span>
+            <span>{t('footer.coffee')}</span>
           </button>
           <button
             onClick={() => onOpenAuthorModal('request')}
             className="flex items-center gap-1 text-[10px] text-[var(--text-secondary)] hover:text-brand transition-colors"
           >
             <MessageCircle className="w-3 h-3" />
-            <span>Yêu cầu</span>
+            <span>{t('footer.request')}</span>
           </button>
           <button
             onClick={() => onOpenAuthorModal('intro')}
             className="flex items-center gap-1 text-[10px] text-[var(--text-secondary)] hover:text-brand transition-colors"
           >
             <Info className="w-3 h-3" />
-            <span>Giới thiệu</span>
+            <span>{t('footer.about')}</span>
           </button>
         </div>
       )}
 
       {/* Credit line */}
       <div className="text-center text-[10px] text-[var(--text-secondary)] py-1 border-t border-[var(--border-color)]">
-        Công cụ tạo bởi{' '}
+        {t('footer.credit')}{' '}
         <a
           href="https://binhvuong.vn"
           target="_blank"

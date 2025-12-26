@@ -4,6 +4,7 @@
  */
 
 import { Library, ListTodo } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { ModuleTab } from '@/types'
 
 interface ModuleTabBarProps {
@@ -11,15 +12,17 @@ interface ModuleTabBarProps {
   onModuleChange: (module: ModuleTab) => void
 }
 
-const modules: { id: ModuleTab; label: string; icon: typeof Library }[] = [
-  { id: 'items', label: 'Items', icon: ListTodo },
-  { id: 'prompts', label: 'Prompts', icon: Library },
+const moduleConfig: { id: ModuleTab; labelKey: string; icon: typeof Library }[] = [
+  { id: 'items', labelKey: 'tabs.items', icon: ListTodo },
+  { id: 'prompts', labelKey: 'tabs.prompts', icon: Library },
 ]
 
 export function ModuleTabBar({ activeModule, onModuleChange }: ModuleTabBarProps) {
+  const { t } = useTranslation()
+
   return (
     <div className="flex border-b border-[var(--border-color)] bg-[var(--bg-secondary)]">
-      {modules.map((mod) => {
+      {moduleConfig.map((mod) => {
         const Icon = mod.icon
         const isActive = activeModule === mod.id
         return (
@@ -36,7 +39,7 @@ export function ModuleTabBar({ activeModule, onModuleChange }: ModuleTabBarProps
             `}
           >
             <Icon className="w-4 h-4" />
-            <span>{mod.label}</span>
+            <span>{t(mod.labelKey)}</span>
           </button>
         )
       })}
