@@ -96,11 +96,15 @@ export interface PromptSyncQueue {
 export interface Settings {
   id: string
   theme: 'light' | 'dark'
+  // Notion settings (deprecated, will be removed)
   notionToken: string | null
   notionDatabaseId: string | null
-  lastSyncAt: number | null
-  // Prompt Library settings
   promptsDatabaseId: string | null
+  // Google Sheets settings
+  sheetsDeploymentUrl: string | null
+  sheetsSecret: string | null
+  // Sync timestamps
+  lastSyncAt: number | null
   promptsLastSyncAt: number | null
   // Auto-sync settings
   autoSyncEnabled: boolean

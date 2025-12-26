@@ -23,7 +23,7 @@ import {
   getPromptCategories,
   getPromptTags,
 } from '@/db/operations/prompt-operations'
-import { promptSyncService } from '@/services/notion/prompt-sync-service'
+import { sheetsSyncService } from '@/services/gsheets'
 import { useToast } from '@/stores/toast-context'
 import type { Prompt, PromptType, PromptFormData, PromptFilterState } from '@/types'
 
@@ -150,7 +150,7 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
 
     setIsSyncing(true)
     try {
-      const result = await promptSyncService.fullSync()
+      const result = await sheetsSyncService.fullSync()
       if (result.success) {
         toast.success(t('prompts.syncResult', { created: result.created, updated: result.updated, deleted: result.deleted }))
         await loadPrompts()
@@ -182,7 +182,7 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
             hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors
             ${isSyncing ? 'opacity-50' : ''}
           `}
-          title={t('prompts.syncWithNotion')}
+          title={t('settings.syncNow')}
         >
           <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
         </button>

@@ -1,10 +1,9 @@
 /**
- * Background service worker for Focus to Notion extension
+ * Background service worker for Focus to Sheets extension
  * Handles periodic sync and message passing
  */
 
-import { syncService } from '@/services/notion'
-import { promptSyncService } from '@/services/notion/prompt-sync-service'
+import { sheetsSyncService } from '@/services/gsheets'
 import { getSettings } from '@/db/operations/settings-operations'
 
 interface UrlMetadata {
@@ -23,7 +22,7 @@ async function fetchUrlMetadata(url: string): Promise<UrlMetadata> {
     const response = await fetch(url, {
       headers: {
         'Accept': 'text/html',
-        'User-Agent': 'Mozilla/5.0 (compatible; NotionSidebar/1.0)',
+        'User-Agent': 'Mozilla/5.0 (compatible; FocusToSheets/1.0)',
       },
     })
 
@@ -34,7 +33,7 @@ async function fetchUrlMetadata(url: string): Promise<UrlMetadata> {
     const html = await response.text()
     return parseHtmlMetadata(html, url)
   } catch (error) {
-    console.error('[NotionSidebar] Failed to fetch URL metadata:', error)
+    console.error('[FocusToSheets] Failed to fetch URL metadata:', error)
     // Return basic fallback
     return extractFromUrl(url)
   }
@@ -124,15 +123,15 @@ async function setupAutoSync() {
   const settings = await getSettings()
 
   // Clear existing alarm
-  await chrome.alarms.clear('syncNotionData')
+  await chrome.alarms.clear('syncData')
 
   if (settings.autoSyncEnabled && settings.autoSyncInterval > 0) {
-    chrome.alarms.create('syncNotionData', {
+    chrome.alarms.create('syncData', {
       periodInMinutes: settings.autoSyncInterval
     })
-    console.log(`[NotionSidebar] Auto-sync enabled: every ${settings.autoSyncInterval} minutes`)
+    console.log(`[FocusToSheets] Auto-sync enabled: every ${settings.autoSyncInterval} minutes`)
   } else {
-    console.log('[NotionSidebar] Auto-sync disabled')
+    console.log('[FocusToSheets] Auto-sync disabled')
   }
 }
 
@@ -140,33 +139,27 @@ async function setupAutoSync() {
 setupAutoSync()
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name === 'syncNotionData') {
-    console.log('[NotionSidebar] Sync alarm triggered at', new Date().toISOString())
+  if (alarm.name === 'syncData') {
+    console.log('[FocusToSheets] Sync alarm triggered at', new Date().toISOString())
 
     try {
-      // Check if Notion is configured
+      // Check if Sheets is configured
       const settings = await getSettings()
 
       // Double-check if auto-sync is still enabled
       if (!settings.autoSyncEnabled) {
-        console.log('[NotionSidebar] Auto-sync disabled, skipping')
+        console.log('[FocusToSheets] Auto-sync disabled, skipping')
         return
       }
 
-      if (!settings.notionToken || !settings.notionDatabaseId) {
-        console.log('[NotionSidebar] Notion not configured, skipping sync')
+      if (!settings.sheetsDeploymentUrl || !settings.sheetsSecret) {
+        console.log('[FocusToSheets] Sheets not configured, skipping sync')
         return
       }
 
-      // Process items sync queue
-      const result = await syncService.processQueue()
-      console.log('[NotionSidebar] Items sync result:', result)
-
-      // Process prompts sync queue if configured
-      if (settings.promptsDatabaseId) {
-        const promptsResult = await promptSyncService.processQueue()
-        console.log('[NotionSidebar] Prompts sync result:', promptsResult)
-      }
+      // Process sync queues (items and prompts)
+      const result = await sheetsSyncService.fullSync()
+      console.log('[FocusToSheets] Sync result:', result)
 
       // Notify UI if there were changes
       if (result.created > 0 || result.updated > 0 || result.deleted > 0) {
@@ -178,7 +171,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
         })
       }
     } catch (error) {
-      console.error('[NotionSidebar] Sync error:', error)
+      console.error('[FocusToSheets] Sync error:', error)
     }
   }
 })
@@ -189,33 +182,11 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     // Manual sync request - sync both items and prompts
     (async () => {
       try {
-        const settings = await getSettings()
-        console.log('[NotionSidebar] SYNC_NOW - promptsDatabaseId:', settings.promptsDatabaseId ? 'configured' : 'not configured')
-
-        // Sync items
-        const itemsResult = await syncService.fullSync()
-        console.log('[NotionSidebar] Items sync result:', itemsResult)
-
-        // Sync prompts if configured
-        let promptsResult = null
-        if (settings.promptsDatabaseId) {
-          promptsResult = await promptSyncService.fullSync()
-          console.log('[NotionSidebar] Prompts sync result:', promptsResult)
-        }
-
-        // Combine results
-        const result = {
-          success: itemsResult.success && (promptsResult?.success ?? true),
-          created: itemsResult.created + (promptsResult?.created ?? 0),
-          updated: itemsResult.updated + (promptsResult?.updated ?? 0),
-          deleted: itemsResult.deleted + (promptsResult?.deleted ?? 0),
-          errors: [...itemsResult.errors, ...(promptsResult?.errors ?? [])],
-        }
-
-        console.log('[NotionSidebar] Combined sync result:', result)
+        const result = await sheetsSyncService.fullSync()
+        console.log('[FocusToSheets] Sync result:', result)
         sendResponse({ success: true, result })
       } catch (error) {
-        console.error('[NotionSidebar] Sync error:', error)
+        console.error('[FocusToSheets] Sync error:', error)
         sendResponse({ success: false, error: error instanceof Error ? error.message : 'Unknown error' })
       }
     })()
@@ -224,9 +195,9 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   if (message.type === 'GET_SYNC_STATUS') {
     // Get current sync status
-    syncService.getQueueStatus().then((status) => {
+    sheetsSyncService.getQueueStatus().then((status) => {
       sendResponse({
-        isSyncing: syncService.syncing,
+        isSyncing: sheetsSyncService.syncing,
         ...status,
       })
     })
@@ -234,7 +205,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   }
 
   if (message.type === 'RETRY_FAILED') {
-    syncService.retryFailed().then((count) => {
+    sheetsSyncService.retryFailed().then((count) => {
       sendResponse({ success: true, count })
     })
     return true
@@ -262,9 +233,9 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 // Listen for extension install/update
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
-    console.log('[NotionSidebar] Extension installed')
+    console.log('[FocusToSheets] Extension installed')
   } else if (details.reason === 'update') {
-    console.log('[NotionSidebar] Extension updated to', chrome.runtime.getManifest().version)
+    console.log('[FocusToSheets] Extension updated to', chrome.runtime.getManifest().version)
   }
 })
 

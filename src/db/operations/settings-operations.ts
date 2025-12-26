@@ -12,10 +12,15 @@ export async function getSettings(): Promise<Settings> {
   const defaults: Settings = {
     id: SETTINGS_ID,
     theme: 'light',
+    // Notion (deprecated)
     notionToken: null,
     notionDatabaseId: null,
-    lastSyncAt: null,
     promptsDatabaseId: null,
+    // Google Sheets
+    sheetsDeploymentUrl: null,
+    sheetsSecret: null,
+    // Sync
+    lastSyncAt: null,
     promptsLastSyncAt: null,
     autoSyncEnabled: true,
     autoSyncInterval: 5, // 5 minutes default

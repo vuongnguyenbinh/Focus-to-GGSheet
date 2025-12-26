@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react'
-import { Key, Database, RefreshCw, CheckCircle, XCircle, AlertCircle, Plus, X, Tags, FolderOpen, Briefcase, Library, Clock, ToggleLeft, ToggleRight } from 'lucide-react'
+import { Key, Database, RefreshCw, CheckCircle, XCircle, AlertCircle, Plus, X, Tags, FolderOpen, Briefcase, Clock, ToggleLeft, ToggleRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button, Input, Select, IconPicker, ColorPicker, CompactColorPicker, TAG_COLORS } from '@/components/shared'
 import { getSettings, updateSettings } from '@/db/operations/settings-operations'
 import { getAllTags, createTag, deleteTag, updateTag } from '@/db/operations/tag-operations'
 import { getAllCategories, createCategory, deleteCategory, updateCategory } from '@/db/operations/category-operations'
 import { getAllProjects, createProject, deleteProject, updateProject } from '@/db/operations/project-operations'
-import { notionClient } from '@/services/notion'
-import { promptSyncService } from '@/services/notion/prompt-sync-service'
+import { sheetsClient } from '@/services/gsheets'
 import { useToast } from '@/stores/toast-context'
 import type { Settings, Tag as TagType, Category, Project } from '@/types'
 
@@ -19,12 +18,10 @@ interface SettingsPanelProps {
 export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
   const { t, i18n } = useTranslation()
   const [settings, setSettings] = useState<Settings | null>(null)
-  const [notionToken, setNotionToken] = useState('')
-  const [notionDatabaseId, setNotionDatabaseId] = useState('')
-  const [promptsDatabaseId, setPromptsDatabaseId] = useState('')
+  const [sheetsUrl, setSheetsUrl] = useState('')
+  const [sheetsSecret, setSheetsSecret] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState<'unknown' | 'connected' | 'error'>('unknown')
-  const [promptsConnectionStatus, setPromptsConnectionStatus] = useState<'unknown' | 'connected' | 'error'>('unknown')
 
   // Auto-sync state
   const [autoSyncEnabled, setAutoSyncEnabled] = useState(true)
@@ -55,16 +52,12 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
   const loadSettings = async () => {
     const s = await getSettings()
     setSettings(s)
-    setNotionToken(s.notionToken || '')
-    setNotionDatabaseId(s.notionDatabaseId || '')
-    setPromptsDatabaseId(s.promptsDatabaseId || '')
+    setSheetsUrl(s.sheetsDeploymentUrl || '')
+    setSheetsSecret(s.sheetsSecret || '')
     setAutoSyncEnabled(s.autoSyncEnabled ?? true)
     setAutoSyncInterval(s.autoSyncInterval ?? 5)
-    if (s.notionToken && s.notionDatabaseId) {
+    if (s.sheetsDeploymentUrl && s.sheetsSecret) {
       setConnectionStatus('connected')
-    }
-    if (s.notionToken && s.promptsDatabaseId) {
-      setPromptsConnectionStatus('connected')
     }
   }
 
@@ -182,13 +175,11 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
     setIsSaving(true)
     try {
       await updateSettings({
-        notionToken: notionToken.trim() || null,
-        notionDatabaseId: notionDatabaseId.trim() || null,
-        promptsDatabaseId: promptsDatabaseId.trim() || null,
+        sheetsDeploymentUrl: sheetsUrl.trim() || null,
+        sheetsSecret: sheetsSecret.trim() || null,
       })
       toast.success(t('toast.saved'))
-      setConnectionStatus(notionToken && notionDatabaseId ? 'connected' : 'unknown')
-      setPromptsConnectionStatus(notionToken && promptsDatabaseId ? 'connected' : 'unknown')
+      setConnectionStatus(sheetsUrl && sheetsSecret ? 'connected' : 'unknown')
     } catch {
       toast.error(t('toast.error'))
     } finally {
@@ -197,21 +188,21 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
   }
 
   const testConnection = async () => {
-    if (!notionToken || !notionDatabaseId) {
+    if (!sheetsUrl || !sheetsSecret) {
       toast.warning(t('settings.fillRequired'))
       return
     }
 
     // Save first so the API client can read credentials
     await updateSettings({
-      notionToken: notionToken.trim(),
-      notionDatabaseId: notionDatabaseId.trim(),
+      sheetsDeploymentUrl: sheetsUrl.trim(),
+      sheetsSecret: sheetsSecret.trim(),
     })
 
     toast.info(t('settings.testingConnection'))
 
     try {
-      const connected = await notionClient.testConnection()
+      const connected = await sheetsClient.testConnection()
       if (connected) {
         setConnectionStatus('connected')
         toast.success(t('settings.connectionSuccess'))
@@ -225,44 +216,9 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
     }
   }
 
-  const testPromptsConnection = async () => {
-    if (!notionToken || !promptsDatabaseId) {
-      toast.warning(t('settings.fillPromptsRequired'))
-      return
-    }
-
-    // Save first
-    await updateSettings({
-      notionToken: notionToken.trim(),
-      promptsDatabaseId: promptsDatabaseId.trim(),
-    })
-
-    toast.info(t('settings.testingPromptsConnection'))
-
-    try {
-      const connected = await promptSyncService.testConnection()
-      if (connected) {
-        setPromptsConnectionStatus('connected')
-        toast.success(t('settings.promptsConnectionSuccess'))
-      } else {
-        setPromptsConnectionStatus('error')
-        toast.error(t('settings.promptsConnectionFailed'))
-      }
-    } catch (error) {
-      setPromptsConnectionStatus('error')
-      toast.error(t('settings.connectionError', { error: error instanceof Error ? error.message : 'Unknown' }))
-    }
-  }
-
   const formatLastSync = () => {
     if (!settings?.lastSyncAt) return t('settings.notSynced')
     const date = new Date(settings.lastSyncAt)
-    return date.toLocaleString(i18n.language === 'vi' ? 'vi-VN' : 'en-US')
-  }
-
-  const formatPromptsLastSync = () => {
-    if (!settings?.promptsLastSyncAt) return t('settings.notSynced')
-    const date = new Date(settings.promptsLastSyncAt)
     return date.toLocaleString(i18n.language === 'vi' ? 'vi-VN' : 'en-US')
   }
 
@@ -296,29 +252,29 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
 
   return (
     <div className="p-4 space-y-6">
-      {/* Notion Integration */}
+      {/* Google Sheets Integration */}
       <section>
         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <Database className="w-4 h-4" />
-          {t('settings.notionConnection')}
+          {t('settings.sheetsConnection')}
         </h3>
 
         <div className="space-y-3">
           <Input
-            label="Integration Token"
-            type="password"
-            value={notionToken}
-            onChange={(e) => setNotionToken(e.target.value)}
-            placeholder="secret_..."
-            icon={<Key className="w-4 h-4" />}
+            label={t('settings.deploymentUrl')}
+            value={sheetsUrl}
+            onChange={(e) => setSheetsUrl(e.target.value)}
+            placeholder="https://script.google.com/macros/s/..."
+            icon={<Database className="w-4 h-4" />}
           />
 
           <Input
-            label="Items Database ID"
-            value={notionDatabaseId}
-            onChange={(e) => setNotionDatabaseId(e.target.value)}
-            placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            icon={<Database className="w-4 h-4" />}
+            label={t('settings.secret')}
+            type="password"
+            value={sheetsSecret}
+            onChange={(e) => setSheetsSecret(e.target.value)}
+            placeholder={t('settings.secretPlaceholder')}
+            icon={<Key className="w-4 h-4" />}
           />
 
           {/* Connection status */}
@@ -348,7 +304,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
               variant="secondary"
               size="sm"
               onClick={testConnection}
-              disabled={!notionToken || !notionDatabaseId}
+              disabled={!sheetsUrl || !sheetsSecret}
             >
               {t('settings.test')}
             </Button>
@@ -364,62 +320,8 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
         </div>
       </section>
 
-      {/* Prompts Database */}
-      <section className="pt-4 border-t border-[var(--border-color)]">
-        <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-          <Library className="w-4 h-4" />
-          {t('settings.promptsConnection')}
-        </h3>
-
-        <div className="space-y-3">
-          <Input
-            label="Prompts Database ID"
-            value={promptsDatabaseId}
-            onChange={(e) => setPromptsDatabaseId(e.target.value)}
-            placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            icon={<Database className="w-4 h-4" />}
-          />
-
-          {/* Connection status */}
-          <div className="flex items-center gap-2 text-sm">
-            {promptsConnectionStatus === 'connected' && (
-              <>
-                <CheckCircle className="w-4 h-4 text-success" />
-                <span className="text-success">{t('settings.connected')}</span>
-              </>
-            )}
-            {promptsConnectionStatus === 'error' && (
-              <>
-                <XCircle className="w-4 h-4 text-error" />
-                <span className="text-error">{t('settings.connectionError')}</span>
-              </>
-            )}
-            {promptsConnectionStatus === 'unknown' && (
-              <>
-                <AlertCircle className="w-4 h-4 text-[var(--text-secondary)]" />
-                <span className="text-[var(--text-secondary)]">{t('settings.notConfigured')}</span>
-              </>
-            )}
-          </div>
-
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-[var(--text-secondary)]">{t('settings.lastSync')}:</span>
-            <span>{formatPromptsLastSync()}</span>
-          </div>
-
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={testPromptsConnection}
-            disabled={!notionToken || !promptsDatabaseId}
-          >
-            {t('settings.testPrompts')}
-          </Button>
-        </div>
-      </section>
-
       {/* Sync Status */}
-      <section>
+      <section className="pt-4 border-t border-[var(--border-color)]">
         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <RefreshCw className="w-4 h-4" />
           {t('settings.sync')}
@@ -632,10 +534,10 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       <section className="pt-4 border-t border-[var(--border-color)]">
         <h3 className="text-sm font-semibold mb-2">{t('settings.guide')}</h3>
         <ol className="text-xs text-[var(--text-secondary)] space-y-1.5 list-decimal list-inside">
-          <li>{t('settings.guideStep1')}</li>
-          <li>{t('settings.guideStep2')}</li>
-          <li>{t('settings.guideStep3')}</li>
-          <li>{t('settings.guideStep4')}</li>
+          <li>{t('settings.sheetsGuideStep1')}</li>
+          <li>{t('settings.sheetsGuideStep2')}</li>
+          <li>{t('settings.sheetsGuideStep3')}</li>
+          <li>{t('settings.sheetsGuideStep4')}</li>
         </ol>
       </section>
     </div>
