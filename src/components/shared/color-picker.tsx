@@ -7,6 +7,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 // 8 basic colors for tags
 export const TAG_COLORS = [
@@ -27,6 +28,7 @@ interface ColorPickerProps {
 }
 
 export function ColorPicker({ value, onChange, showAll = false }: ColorPickerProps) {
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 
   // Inline mode: show 5 or all colors
@@ -55,7 +57,7 @@ export function ColorPicker({ value, onChange, showAll = false }: ColorPickerPro
             type="button"
             onClick={() => setIsOpen(true)}
             className="w-6 h-6 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-brand flex items-center justify-center text-xs text-[var(--text-secondary)]"
-            title="More colors"
+            title={t('common.moreColors')}
           >
             +
           </button>

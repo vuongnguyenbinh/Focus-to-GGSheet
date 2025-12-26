@@ -1,4 +1,5 @@
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface TagProps {
   label: string
@@ -19,6 +20,7 @@ export function Tag({
   size = 'sm',
   className = '',
 }: TagProps) {
+  const { t } = useTranslation()
   const sizes = {
     sm: 'text-[10px] px-1.5 py-0.5',
     md: 'text-xs px-2 py-1',
@@ -48,6 +50,7 @@ export function Tag({
             onRemove()
           }}
           className="p-0.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10"
+          title={t('common.delete')}
         >
           <X className="w-2.5 h-2.5" />
         </button>

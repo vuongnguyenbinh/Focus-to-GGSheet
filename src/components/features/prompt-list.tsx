@@ -2,6 +2,7 @@
  * List component for displaying prompts with filtering
  */
 
+import { useTranslation } from 'react-i18next'
 import { PromptCard } from './prompt-card'
 import type { Prompt, PromptFilterState } from '@/types'
 
@@ -26,6 +27,7 @@ export function PromptList({
   onToggleApproved,
   onClick,
 }: PromptListProps) {
+  const { t } = useTranslation()
   // Apply filters
   const filteredPrompts = prompts.filter((prompt) => {
     // Search filter
@@ -74,13 +76,13 @@ export function PromptList({
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <p className="text-[var(--text-secondary)]">
           {searchQuery || filter.category || filter.tags.length > 0 || filter.approved !== null || filter.favorite !== null
-            ? 'Không tìm thấy prompt phù hợp'
-            : 'Chưa có prompt nào'}
+            ? t('promptList.noMatchingPrompts')
+            : t('prompts.empty')}
         </p>
         <p className="text-xs text-[var(--text-secondary)] mt-1">
           {searchQuery || filter.category || filter.tags.length > 0 || filter.approved !== null || filter.favorite !== null
-            ? 'Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm'
-            : 'Nhấn nút "+" để thêm prompt mới'}
+            ? t('promptList.tryChangingFilters')
+            : t('prompts.emptyHint')}
         </p>
       </div>
     )

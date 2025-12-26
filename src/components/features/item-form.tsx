@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X, Calendar, Tag as TagIcon, Plus, FolderOpen, Briefcase } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Button, Input, Select, Tag, IconPicker, ColorPicker, TAG_COLORS, CategoryIcon, CATEGORY_ICONS } from '@/components/shared'
 import { createTag } from '@/db/operations/tag-operations'
 import { createCategory } from '@/db/operations/category-operations'
@@ -15,6 +16,8 @@ import type {
 } from '@/types'
 
 // Use TAG_COLORS from color-picker for consistency
+
+type TypeLabelKey = 'form.typeTask' | 'form.typeBookmark' | 'form.typeNote'
 
 interface PrefillData {
   title?: string
@@ -34,18 +37,11 @@ interface ItemFormProps {
   onMetadataChange?: () => void // Callback to refresh metadata after creating new tag/category/project
 }
 
-const typeLabels: Record<ItemType, string> = {
-  task: 'Công việc',
-  bookmark: 'Dấu trang',
-  note: 'Ghi chú',
+const typeLabelKeys: Record<ItemType, TypeLabelKey> = {
+  task: 'form.typeTask',
+  bookmark: 'form.typeBookmark',
+  note: 'form.typeNote',
 }
-
-const priorityOptions = [
-  { value: '', label: 'Không có' },
-  { value: 'high', label: 'Cao' },
-  { value: 'medium', label: 'Trung bình' },
-  { value: 'low', label: 'Thấp' },
-]
 
 export function ItemForm({
   type,
@@ -58,6 +54,15 @@ export function ItemForm({
   onCancel,
   onMetadataChange,
 }: ItemFormProps) {
+  const { t } = useTranslation()
+
+  const priorityOptions = [
+    { value: '', label: t('form.noPriority') },
+    { value: 'high', label: t('tasks.priorityHigh') },
+    { value: 'medium', label: t('tasks.priorityMedium') },
+    { value: 'low', label: t('tasks.priorityLow') },
+  ]
+
   // Use prefill data if no item (for URL drops)
   const [title, setTitle] = useState(item?.title || prefill?.title || '')
   const [content, setContent] = useState(item?.content || prefill?.content || '')
@@ -144,7 +149,7 @@ export function ItemForm({
   const isLucideIcon = (icon: string) => CATEGORY_ICONS.some((i) => i.name === icon)
 
   const projectOptions = [
-    { value: '', label: 'Không có' },
+    { value: '', label: t('form.noProject') },
     ...projects.map((p) => ({ value: p.id, label: p.name })),
   ]
 
@@ -152,7 +157,7 @@ export function ItemForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex items-center justify-between pb-2 border-b border-[var(--border-color)]">
         <h2 className="text-lg font-semibold">
-          {isEditing ? 'Sửa' : 'Thêm'} {typeLabels[type]}
+          {isEditing ? t('form.edit') : t('form.add')} {t(typeLabelKeys[type])}
         </h2>
         <button
           type="button"
@@ -164,10 +169,10 @@ export function ItemForm({
       </div>
 
       <Input
-        label="Tiêu đề"
+        label={t('form.title')}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder={`Nhập tiêu đề ${typeLabels[type].toLowerCase()}...`}
+        placeholder={t('form.titlePlaceholder')}
         required
         autoFocus
       />
@@ -183,11 +188,11 @@ export function ItemForm({
       )}
 
       <div>
-        <label className="block text-sm font-medium mb-1.5">Nội dung</label>
+        <label className="block text-sm font-medium mb-1.5">{t('form.content')}</label>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder={type === 'note' ? 'Viết ghi chú của bạn...' : 'Mô tả thêm...'}
+          placeholder={type === 'note' ? t('form.notePlaceholder') : t('form.descriptionPlaceholder')}
           rows={type === 'note' ? 6 : 3}
           className="
             w-full px-3 py-2 rounded-lg border resize-none
@@ -201,13 +206,13 @@ export function ItemForm({
       {type === 'task' && (
         <div className="grid grid-cols-2 gap-3">
           <Select
-            label="Độ ưu tiên"
+            label={t('form.priority')}
             value={priority}
             onChange={(e) => setPriority(e.target.value as Priority | '')}
             options={priorityOptions}
           />
           <div>
-            <label className="block text-sm font-medium mb-1.5">Hạn chót</label>
+            <label className="block text-sm font-medium mb-1.5">{t('form.deadline')}</label>
             <div className="relative">
               <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
@@ -231,7 +236,7 @@ export function ItemForm({
         <div className="flex items-center justify-between mb-1.5">
           <label className="text-sm font-medium flex items-center gap-1">
             <FolderOpen className="w-3.5 h-3.5" />
-            Danh mục
+            {t('form.category')}
           </label>
           <button
             type="button"
@@ -239,7 +244,7 @@ export function ItemForm({
             className="text-xs text-brand hover:underline flex items-center gap-0.5"
           >
             <Plus className="w-3 h-3" />
-            Tạo mới
+            {t('form.createNew')}
           </button>
         </div>
         {showNewCategory ? (
@@ -253,12 +258,12 @@ export function ItemForm({
               type="text"
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}
-              placeholder="Tên danh mục..."
+              placeholder={t('form.categoryPlaceholder')}
               className="flex-1 h-8 px-2 text-sm rounded border bg-[var(--bg-secondary)] border-[var(--border-color)] focus:border-brand focus:outline-none"
               onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleCreateCategory())}
               autoFocus
             />
-            <Button type="button" variant="primary" size="sm" onClick={handleCreateCategory}>Tạo</Button>
+            <Button type="button" variant="primary" size="sm" onClick={handleCreateCategory}>{t('form.create')}</Button>
             <button type="button" onClick={() => setShowNewCategory(false)} className="p-1 text-gray-400 hover:text-gray-600">
               <X className="w-4 h-4" />
             </button>
@@ -270,7 +275,7 @@ export function ItemForm({
               onChange={(e) => setCategoryId(e.target.value)}
               className={`w-full h-11 pr-8 rounded-lg border bg-[var(--bg-secondary)] border-[var(--border-color)] focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none transition-colors text-sm appearance-none ${categoryId ? 'pl-9' : 'px-3'}`}
             >
-              <option value="">Không có</option>
+              <option value="">{t('form.noCategory')}</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
@@ -305,7 +310,7 @@ export function ItemForm({
         <div className="flex items-center justify-between mb-1.5">
           <label className="text-sm font-medium flex items-center gap-1">
             <Briefcase className="w-3.5 h-3.5" />
-            Dự án
+            {t('form.project')}
           </label>
           <button
             type="button"
@@ -313,7 +318,7 @@ export function ItemForm({
             className="text-xs text-brand hover:underline flex items-center gap-0.5"
           >
             <Plus className="w-3 h-3" />
-            Tạo mới
+            {t('form.createNew')}
           </button>
         </div>
         {showNewProject ? (
@@ -327,12 +332,12 @@ export function ItemForm({
               type="text"
               value={newProjectName}
               onChange={(e) => setNewProjectName(e.target.value)}
-              placeholder="Tên dự án..."
+              placeholder={t('form.projectPlaceholder')}
               className="flex-1 h-8 px-2 text-sm rounded border bg-[var(--bg-secondary)] border-[var(--border-color)] focus:border-brand focus:outline-none"
               onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleCreateProject())}
               autoFocus
             />
-            <Button type="button" variant="primary" size="sm" onClick={handleCreateProject}>Tạo</Button>
+            <Button type="button" variant="primary" size="sm" onClick={handleCreateProject}>{t('form.create')}</Button>
             <button type="button" onClick={() => setShowNewProject(false)} className="p-1 text-gray-400 hover:text-gray-600">
               <X className="w-4 h-4" />
             </button>
@@ -351,7 +356,7 @@ export function ItemForm({
         <div className="flex items-center justify-between mb-1.5">
           <label className="text-sm font-medium flex items-center gap-1">
             <TagIcon className="w-3.5 h-3.5" />
-            Nhãn
+            {t('form.tags')}
           </label>
           <button
             type="button"
@@ -359,7 +364,7 @@ export function ItemForm({
             className="text-xs text-brand hover:underline flex items-center gap-0.5"
           >
             <Plus className="w-3 h-3" />
-            Tạo mới
+            {t('form.createNew')}
           </button>
         </div>
 
@@ -375,12 +380,12 @@ export function ItemForm({
               type="text"
               value={newTagName}
               onChange={(e) => setNewTagName(e.target.value)}
-              placeholder="Tên nhãn..."
+              placeholder={t('form.tagPlaceholder')}
               className="flex-1 h-8 px-2 text-sm rounded border bg-[var(--bg-secondary)] border-[var(--border-color)] focus:border-brand focus:outline-none"
               onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleCreateTag())}
               autoFocus
             />
-            <Button type="button" variant="primary" size="sm" onClick={handleCreateTag}>Tạo</Button>
+            <Button type="button" variant="primary" size="sm" onClick={handleCreateTag}>{t('form.create')}</Button>
             <button type="button" onClick={() => setShowNewTag(false)} className="p-1 text-gray-400 hover:text-gray-600">
               <X className="w-4 h-4" />
             </button>
@@ -407,7 +412,7 @@ export function ItemForm({
             className="flex items-center gap-1 px-2 py-1 text-xs text-[var(--text-secondary)] hover:text-brand transition-colors"
           >
             <TagIcon className="w-3 h-3" />
-            Chọn nhãn
+            {t('form.selectTags')}
           </button>
         </div>
 
@@ -430,10 +435,10 @@ export function ItemForm({
 
       <div className="flex gap-2 pt-2">
         <Button type="button" variant="secondary" onClick={onCancel} fullWidth>
-          Hủy
+          {t('common.cancel')}
         </Button>
         <Button type="submit" variant="primary" fullWidth>
-          {isEditing ? 'Lưu' : 'Thêm'}
+          {isEditing ? t('common.save') : t('common.add')}
         </Button>
       </div>
     </form>

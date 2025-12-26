@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Key, Database, RefreshCw, CheckCircle, XCircle, AlertCircle, Plus, X, Tags, FolderOpen, Briefcase, Library, Clock, ToggleLeft, ToggleRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Button, Input, Select, IconPicker, ColorPicker, CompactColorPicker, TAG_COLORS } from '@/components/shared'
 import { getSettings, updateSettings } from '@/db/operations/settings-operations'
 import { getAllTags, createTag, deleteTag, updateTag } from '@/db/operations/tag-operations'
@@ -16,6 +17,7 @@ interface SettingsPanelProps {
 }
 
 export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
+  const { t, i18n } = useTranslation()
   const [settings, setSettings] = useState<Settings | null>(null)
   const [notionToken, setNotionToken] = useState('')
   const [notionDatabaseId, setNotionDatabaseId] = useState('')
@@ -85,9 +87,9 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       setNewTagName('')
       setNewTagColor(TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)].value)
       loadMetadata()
-      toast.success('Đã thêm nhãn')
+      toast.success(t('toast.saved'))
     } catch {
-      toast.error('Không thể thêm nhãn')
+      toast.error(t('toast.error'))
     }
   }
 
@@ -96,7 +98,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       await updateTag(id, { color })
       loadMetadata()
     } catch {
-      toast.error('Không thể cập nhật nhãn')
+      toast.error(t('toast.error'))
     }
   }
 
@@ -104,9 +106,9 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
     try {
       await deleteTag(id)
       loadMetadata()
-      toast.success('Đã xóa nhãn')
+      toast.success(t('toast.deleted'))
     } catch {
-      toast.error('Không thể xóa nhãn')
+      toast.error(t('toast.error'))
     }
   }
 
@@ -118,9 +120,9 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       setNewCategoryName('')
       setNewCategoryIcon('folder')
       loadMetadata()
-      toast.success('Đã thêm danh mục')
+      toast.success(t('toast.saved'))
     } catch {
-      toast.error('Không thể thêm danh mục')
+      toast.error(t('toast.error'))
     }
   }
 
@@ -129,7 +131,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       await updateCategory(id, { icon })
       loadMetadata()
     } catch {
-      toast.error('Không thể cập nhật danh mục')
+      toast.error(t('toast.error'))
     }
   }
 
@@ -137,9 +139,9 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
     try {
       await deleteCategory(id)
       loadMetadata()
-      toast.success('Đã xóa danh mục')
+      toast.success(t('toast.deleted'))
     } catch {
-      toast.error('Không thể xóa danh mục')
+      toast.error(t('toast.error'))
     }
   }
 
@@ -151,9 +153,9 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       setNewProjectName('')
       setNewProjectColor(TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)].value)
       loadMetadata()
-      toast.success('Đã thêm dự án')
+      toast.success(t('toast.saved'))
     } catch {
-      toast.error('Không thể thêm dự án')
+      toast.error(t('toast.error'))
     }
   }
 
@@ -162,7 +164,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       await updateProject(id, { color })
       loadMetadata()
     } catch {
-      toast.error('Không thể cập nhật dự án')
+      toast.error(t('toast.error'))
     }
   }
 
@@ -170,9 +172,9 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
     try {
       await deleteProject(id)
       loadMetadata()
-      toast.success('Đã xóa dự án')
+      toast.success(t('toast.deleted'))
     } catch {
-      toast.error('Không thể xóa dự án')
+      toast.error(t('toast.error'))
     }
   }
 
@@ -184,11 +186,11 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
         notionDatabaseId: notionDatabaseId.trim() || null,
         promptsDatabaseId: promptsDatabaseId.trim() || null,
       })
-      toast.success('Đã lưu cài đặt')
+      toast.success(t('toast.saved'))
       setConnectionStatus(notionToken && notionDatabaseId ? 'connected' : 'unknown')
       setPromptsConnectionStatus(notionToken && promptsDatabaseId ? 'connected' : 'unknown')
     } catch {
-      toast.error('Không thể lưu cài đặt')
+      toast.error(t('toast.error'))
     } finally {
       setIsSaving(false)
     }
@@ -196,7 +198,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
 
   const testConnection = async () => {
     if (!notionToken || !notionDatabaseId) {
-      toast.warning('Vui lòng nhập đầy đủ thông tin')
+      toast.warning(t('settings.fillRequired'))
       return
     }
 
@@ -206,26 +208,26 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       notionDatabaseId: notionDatabaseId.trim(),
     })
 
-    toast.info('Đang kiểm tra kết nối...')
+    toast.info(t('settings.testingConnection'))
 
     try {
       const connected = await notionClient.testConnection()
       if (connected) {
         setConnectionStatus('connected')
-        toast.success('Kết nối thành công!')
+        toast.success(t('settings.connectionSuccess'))
       } else {
         setConnectionStatus('error')
-        toast.error('Không thể kết nối')
+        toast.error(t('settings.connectionFailed'))
       }
     } catch (error) {
       setConnectionStatus('error')
-      toast.error('Lỗi kết nối: ' + (error instanceof Error ? error.message : 'Unknown'))
+      toast.error(t('settings.connectionError', { error: error instanceof Error ? error.message : 'Unknown' }))
     }
   }
 
   const testPromptsConnection = async () => {
     if (!notionToken || !promptsDatabaseId) {
-      toast.warning('Vui lòng nhập Token và Prompts Database ID')
+      toast.warning(t('settings.fillPromptsRequired'))
       return
     }
 
@@ -235,33 +237,33 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       promptsDatabaseId: promptsDatabaseId.trim(),
     })
 
-    toast.info('Đang kiểm tra kết nối Prompts...')
+    toast.info(t('settings.testingPromptsConnection'))
 
     try {
       const connected = await promptSyncService.testConnection()
       if (connected) {
         setPromptsConnectionStatus('connected')
-        toast.success('Kết nối Prompts thành công!')
+        toast.success(t('settings.promptsConnectionSuccess'))
       } else {
         setPromptsConnectionStatus('error')
-        toast.error('Không thể kết nối Prompts Database')
+        toast.error(t('settings.promptsConnectionFailed'))
       }
     } catch (error) {
       setPromptsConnectionStatus('error')
-      toast.error('Lỗi kết nối: ' + (error instanceof Error ? error.message : 'Unknown'))
+      toast.error(t('settings.connectionError', { error: error instanceof Error ? error.message : 'Unknown' }))
     }
   }
 
   const formatLastSync = () => {
-    if (!settings?.lastSyncAt) return 'Chưa đồng bộ'
+    if (!settings?.lastSyncAt) return t('settings.notSynced')
     const date = new Date(settings.lastSyncAt)
-    return date.toLocaleString('vi-VN')
+    return date.toLocaleString(i18n.language === 'vi' ? 'vi-VN' : 'en-US')
   }
 
   const formatPromptsLastSync = () => {
-    if (!settings?.promptsLastSyncAt) return 'Chưa đồng bộ'
+    if (!settings?.promptsLastSyncAt) return t('settings.notSynced')
     const date = new Date(settings.promptsLastSyncAt)
-    return date.toLocaleString('vi-VN')
+    return date.toLocaleString(i18n.language === 'vi' ? 'vi-VN' : 'en-US')
   }
 
   // Auto-sync handlers
@@ -271,7 +273,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
     await updateSettings({ autoSyncEnabled: newValue })
     // Notify background to update alarm
     chrome.runtime.sendMessage({ type: 'UPDATE_AUTO_SYNC' }).catch(() => {})
-    toast.success(newValue ? 'Đã bật tự động đồng bộ' : 'Đã tắt tự động đồng bộ')
+    toast.success(newValue ? t('settings.autoSyncEnabled') : t('settings.autoSyncDisabled'))
   }
 
   const handleIntervalChange = async (value: string) => {
@@ -280,16 +282,16 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
     await updateSettings({ autoSyncInterval: interval })
     // Notify background to update alarm
     chrome.runtime.sendMessage({ type: 'UPDATE_AUTO_SYNC' }).catch(() => {})
-    toast.success(`Đồng bộ mỗi ${interval} phút`)
+    toast.success(t('settings.syncIntervalUpdated', { interval }))
   }
 
   const syncIntervalOptions = [
-    { value: '1', label: '1 phút' },
-    { value: '5', label: '5 phút' },
-    { value: '10', label: '10 phút' },
-    { value: '15', label: '15 phút' },
-    { value: '30', label: '30 phút' },
-    { value: '60', label: '1 giờ' },
+    { value: '1', label: t('settings.interval1min') },
+    { value: '5', label: t('settings.interval5min') },
+    { value: '10', label: t('settings.interval10min') },
+    { value: '15', label: t('settings.interval15min') },
+    { value: '30', label: t('settings.interval30min') },
+    { value: '60', label: t('settings.interval1hour') },
   ]
 
   return (
@@ -298,7 +300,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       <section>
         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <Database className="w-4 h-4" />
-          Kết nối Notion (Items)
+          {t('settings.notionConnection')}
         </h3>
 
         <div className="space-y-3">
@@ -324,19 +326,19 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
             {connectionStatus === 'connected' && (
               <>
                 <CheckCircle className="w-4 h-4 text-success" />
-                <span className="text-success">Đã kết nối</span>
+                <span className="text-success">{t('settings.connected')}</span>
               </>
             )}
             {connectionStatus === 'error' && (
               <>
                 <XCircle className="w-4 h-4 text-error" />
-                <span className="text-error">Lỗi kết nối</span>
+                <span className="text-error">{t('settings.connectionError')}</span>
               </>
             )}
             {connectionStatus === 'unknown' && (
               <>
                 <AlertCircle className="w-4 h-4 text-[var(--text-secondary)]" />
-                <span className="text-[var(--text-secondary)]">Chưa cấu hình</span>
+                <span className="text-[var(--text-secondary)]">{t('settings.notConfigured')}</span>
               </>
             )}
           </div>
@@ -348,7 +350,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
               onClick={testConnection}
               disabled={!notionToken || !notionDatabaseId}
             >
-              Kiểm tra
+              {t('settings.test')}
             </Button>
             <Button
               variant="primary"
@@ -356,7 +358,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
               onClick={handleSave}
               loading={isSaving}
             >
-              Lưu
+              {t('settings.save')}
             </Button>
           </div>
         </div>
@@ -366,7 +368,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       <section className="pt-4 border-t border-[var(--border-color)]">
         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <Library className="w-4 h-4" />
-          Kết nối Prompts Library
+          {t('settings.promptsConnection')}
         </h3>
 
         <div className="space-y-3">
@@ -383,25 +385,25 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
             {promptsConnectionStatus === 'connected' && (
               <>
                 <CheckCircle className="w-4 h-4 text-success" />
-                <span className="text-success">Đã kết nối</span>
+                <span className="text-success">{t('settings.connected')}</span>
               </>
             )}
             {promptsConnectionStatus === 'error' && (
               <>
                 <XCircle className="w-4 h-4 text-error" />
-                <span className="text-error">Lỗi kết nối</span>
+                <span className="text-error">{t('settings.connectionError')}</span>
               </>
             )}
             {promptsConnectionStatus === 'unknown' && (
               <>
                 <AlertCircle className="w-4 h-4 text-[var(--text-secondary)]" />
-                <span className="text-[var(--text-secondary)]">Chưa cấu hình</span>
+                <span className="text-[var(--text-secondary)]">{t('settings.notConfigured')}</span>
               </>
             )}
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-[var(--text-secondary)]">Lần đồng bộ cuối:</span>
+            <span className="text-[var(--text-secondary)]">{t('settings.lastSync')}:</span>
             <span>{formatPromptsLastSync()}</span>
           </div>
 
@@ -411,7 +413,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
             onClick={testPromptsConnection}
             disabled={!notionToken || !promptsDatabaseId}
           >
-            Kiểm tra Prompts
+            {t('settings.testPrompts')}
           </Button>
         </div>
       </section>
@@ -420,7 +422,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       <section>
         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <RefreshCw className="w-4 h-4" />
-          Đồng bộ
+          {t('settings.sync')}
         </h3>
 
         <div className="space-y-3">
@@ -428,7 +430,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-[var(--text-secondary)]" />
-              <span className="text-sm">Tự động đồng bộ</span>
+              <span className="text-sm">{t('settings.autoSync')}</span>
             </div>
             <button
               onClick={handleToggleAutoSync}
@@ -447,7 +449,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
           {/* Interval selector */}
           {autoSyncEnabled && (
             <Select
-              label="Chu kỳ đồng bộ"
+              label={t('settings.syncInterval')}
               value={autoSyncInterval.toString()}
               onChange={(e) => handleIntervalChange(e.target.value)}
               options={syncIntervalOptions}
@@ -455,7 +457,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
           )}
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-[var(--text-secondary)]">Lần đồng bộ cuối:</span>
+            <span className="text-[var(--text-secondary)]">{t('settings.lastSync')}:</span>
             <span>{formatLastSync()}</span>
           </div>
 
@@ -467,7 +469,7 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
             loading={isSyncing}
             disabled={connectionStatus !== 'connected'}
           >
-            {isSyncing ? 'Đang đồng bộ...' : 'Đồng bộ ngay'}
+            {isSyncing ? t('settings.syncing') : t('settings.syncNow')}
           </Button>
         </div>
       </section>
@@ -476,13 +478,13 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       <section className="pt-4 border-t border-[var(--border-color)]">
         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <Tags className="w-4 h-4" />
-          Quản lý nhãn
+          {t('settings.manageTags')}
         </h3>
 
         {/* Existing tags with inline editing */}
         <div className="space-y-1.5 mb-3">
           {tags.length === 0 ? (
-            <span className="text-xs text-[var(--text-secondary)]">Chưa có nhãn nào</span>
+            <span className="text-xs text-[var(--text-secondary)]">{t('settings.noTags')}</span>
           ) : (
             tags.map((tag) => (
               <div key={tag.id} className="flex items-center justify-between p-2 rounded-lg bg-[var(--bg-secondary)]">
@@ -511,14 +513,14 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
               type="text"
               value={newTagName}
               onChange={(e) => setNewTagName(e.target.value)}
-              placeholder="Tên nhãn mới..."
+              placeholder={t('settings.newTagPlaceholder')}
               className="w-full h-9 px-3 text-sm rounded-lg border bg-[var(--bg-secondary)] border-[var(--border-color)] focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none"
               onKeyDown={(e) => e.key === 'Enter' && handleAddTag()}
             />
           </div>
           <ColorPicker value={newTagColor} onChange={setNewTagColor} showAll />
           <Button variant="primary" size="sm" icon={<Plus className="w-3 h-3" />} onClick={handleAddTag}>
-            Thêm
+            {t('settings.add')}
           </Button>
         </div>
       </section>
@@ -527,13 +529,13 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       <section className="pt-4 border-t border-[var(--border-color)]">
         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <FolderOpen className="w-4 h-4" />
-          Quản lý danh mục
+          {t('settings.manageCategories')}
         </h3>
 
         {/* Existing categories with icon editing */}
         <div className="space-y-1.5 mb-3">
           {categories.length === 0 ? (
-            <span className="text-xs text-[var(--text-secondary)]">Chưa có danh mục nào</span>
+            <span className="text-xs text-[var(--text-secondary)]">{t('settings.noCategories')}</span>
           ) : (
             categories.map((cat) => (
               <div key={cat.id} className="flex items-center justify-between p-2 rounded-lg bg-[var(--bg-secondary)]">
@@ -564,13 +566,13 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
               type="text"
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}
-              placeholder="Tên danh mục..."
+              placeholder={t('settings.newCategoryPlaceholder')}
               className="w-full h-9 px-3 text-sm rounded-lg border bg-[var(--bg-secondary)] border-[var(--border-color)] focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none"
               onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
             />
           </div>
           <Button variant="primary" size="sm" icon={<Plus className="w-3 h-3" />} onClick={handleAddCategory}>
-            Thêm
+            {t('settings.add')}
           </Button>
         </div>
       </section>
@@ -579,13 +581,13 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
       <section className="pt-4 border-t border-[var(--border-color)]">
         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <Briefcase className="w-4 h-4" />
-          Quản lý dự án
+          {t('settings.manageProjects')}
         </h3>
 
         {/* Existing projects with color editing */}
         <div className="space-y-1.5 mb-3">
           {projects.length === 0 ? (
-            <span className="text-xs text-[var(--text-secondary)]">Chưa có dự án nào</span>
+            <span className="text-xs text-[var(--text-secondary)]">{t('settings.noProjects')}</span>
           ) : (
             projects.map((proj) => (
               <div key={proj.id} className="flex items-center justify-between p-2 rounded-lg bg-[var(--bg-secondary)]">
@@ -615,25 +617,25 @@ export function SettingsPanel({ onSyncNow, isSyncing }: SettingsPanelProps) {
               type="text"
               value={newProjectName}
               onChange={(e) => setNewProjectName(e.target.value)}
-              placeholder="Tên dự án..."
+              placeholder={t('settings.newProjectPlaceholder')}
               className="w-full h-9 px-3 text-sm rounded-lg border bg-[var(--bg-secondary)] border-[var(--border-color)] focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none"
               onKeyDown={(e) => e.key === 'Enter' && handleAddProject()}
             />
           </div>
           <Button variant="primary" size="sm" icon={<Plus className="w-3 h-3" />} onClick={handleAddProject}>
-            Thêm
+            {t('settings.add')}
           </Button>
         </div>
       </section>
 
       {/* Help */}
       <section className="pt-4 border-t border-[var(--border-color)]">
-        <h3 className="text-sm font-semibold mb-2">Hướng dẫn</h3>
+        <h3 className="text-sm font-semibold mb-2">{t('settings.guide')}</h3>
         <ol className="text-xs text-[var(--text-secondary)] space-y-1.5 list-decimal list-inside">
-          <li>Tạo Integration tại notion.so/my-integrations</li>
-          <li>Sao chép Internal Integration Token</li>
-          <li>Chia sẻ database với Integration</li>
-          <li>Lấy Database ID từ URL database</li>
+          <li>{t('settings.guideStep1')}</li>
+          <li>{t('settings.guideStep2')}</li>
+          <li>{t('settings.guideStep3')}</li>
+          <li>{t('settings.guideStep4')}</li>
         </ol>
       </section>
     </div>

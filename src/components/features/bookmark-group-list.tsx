@@ -5,6 +5,7 @@
 
 import { useState, useMemo } from 'react'
 import { ChevronDown, ChevronRight, ExternalLink, FolderOpen, MoreHorizontal, Edit2, Trash2, Inbox, ChevronsUpDown, ChevronsDownUp } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { Item, Category, Tag, FilterState } from '@/types'
 import { Tag as TagComponent, CategoryIcon, DropdownMenu, DropdownMenuItem } from '@/components/shared'
 
@@ -32,6 +33,7 @@ export function BookmarkGroupList({
   onDelete,
   onClick,
 }: BookmarkGroupListProps) {
+  const { t } = useTranslation()
   // Track expanded categories (collapsed by default)
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
     new Set()
@@ -134,10 +136,10 @@ export function BookmarkGroupList({
       <div className="flex flex-col items-center justify-center py-12 text-[var(--text-secondary)]">
         <Inbox className="w-12 h-12 mb-3 opacity-50" />
         <p className="text-sm font-medium">
-          {hasFilters ? 'Không tìm thấy dấu trang phù hợp' : 'Chưa có dấu trang nào'}
+          {hasFilters ? t('bookmarkList.noMatchingBookmarks') : t('bookmarks.empty')}
         </p>
         <p className="text-xs mt-1">
-          {hasFilters ? 'Thử thay đổi bộ lọc' : 'Nhấn nút + để thêm dấu trang mới'}
+          {hasFilters ? t('bookmarkList.tryChangingFilters') : t('bookmarks.emptyHint')}
         </p>
       </div>
     )
@@ -156,10 +158,10 @@ export function BookmarkGroupList({
                 ? 'text-[var(--text-secondary)] bg-gray-100 dark:bg-gray-700 border-transparent cursor-not-allowed opacity-50'
                 : 'text-[var(--text-primary)] bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-brand border-[var(--border-color)]'
             }`}
-            title="Mở rộng tất cả"
+            title={t('bookmarkList.expandAll')}
           >
             <ChevronsUpDown className="w-4 h-4" />
-            <span>Mở rộng</span>
+            <span>{t('bookmarkList.expand')}</span>
           </button>
           <button
             onClick={collapseAll}
@@ -169,10 +171,10 @@ export function BookmarkGroupList({
                 ? 'text-[var(--text-secondary)] bg-gray-100 dark:bg-gray-700 border-transparent cursor-not-allowed opacity-50'
                 : 'text-[var(--text-primary)] bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-brand border-[var(--border-color)]'
             }`}
-            title="Thu gọn tất cả"
+            title={t('bookmarkList.collapseAll')}
           >
             <ChevronsDownUp className="w-4 h-4" />
-            <span>Thu gọn</span>
+            <span>{t('bookmarkList.collapse')}</span>
           </button>
         </div>
       )}
@@ -206,7 +208,7 @@ export function BookmarkGroupList({
               ) : (
                 <>
                   <FolderOpen className="w-4 h-4 text-[var(--text-secondary)]" />
-                  <span className="text-sm font-medium text-[var(--text-secondary)]">Chưa phân loại</span>
+                  <span className="text-sm font-medium text-[var(--text-secondary)]">{t('bookmarkList.uncategorized')}</span>
                 </>
               )}
 
@@ -248,6 +250,7 @@ interface BookmarkRowProps {
 }
 
 function BookmarkRow({ bookmark, tags, onEdit, onDelete, onClick }: BookmarkRowProps) {
+  const { t } = useTranslation()
   const itemTags = tags.filter((t) => bookmark.tags.includes(t.id))
   const hostname = bookmark.url ? new URL(bookmark.url).hostname : null
 
@@ -303,7 +306,7 @@ function BookmarkRow({ bookmark, tags, onEdit, onDelete, onClick }: BookmarkRowP
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
           className="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 text-[var(--text-secondary)] hover:text-brand transition-colors"
-          title="Mở liên kết"
+          title={t('bookmarkList.openLink')}
         >
           <ExternalLink className="w-4 h-4" />
         </a>
@@ -316,12 +319,12 @@ function BookmarkRow({ bookmark, tags, onEdit, onDelete, onClick }: BookmarkRowP
       >
         <DropdownMenuItem
           icon={<Edit2 className="w-3.5 h-3.5" />}
-          label="Sửa"
+          label={t('common.edit')}
           onClick={() => onEdit(bookmark)}
         />
         <DropdownMenuItem
           icon={<Trash2 className="w-3.5 h-3.5" />}
-          label="Xóa"
+          label={t('common.delete')}
           onClick={() => onDelete(bookmark.id)}
           variant="danger"
         />

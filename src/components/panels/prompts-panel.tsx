@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { Plus, RefreshCw } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { SearchBar, Modal } from '@/components/shared'
 import {
   PromptTabBar,
@@ -32,6 +33,7 @@ interface PromptsPanelProps {
 }
 
 export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps) {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<PromptType>('text')
   const [prompts, setPrompts] = useState<Prompt[]>([])
   const [categories, setCategories] = useState<string[]>([])
@@ -84,9 +86,9 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
       await loadPrompts()
       await loadMetadata()
       setShowForm(false)
-      toast.success('Đã thêm prompt')
+      toast.success(t('toast.saved'))
     } catch (error) {
-      toast.error('Không thể thêm prompt: ' + (error instanceof Error ? error.message : 'Unknown'))
+      toast.error(t('toast.error') + ': ' + (error instanceof Error ? error.message : 'Unknown'))
     }
   }
 
@@ -98,21 +100,21 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
       await loadMetadata()
       setEditingPrompt(null)
       setShowForm(false)
-      toast.success('Đã cập nhật prompt')
+      toast.success(t('toast.saved'))
     } catch (error) {
-      toast.error('Không thể cập nhật: ' + (error instanceof Error ? error.message : 'Unknown'))
+      toast.error(t('toast.error') + ': ' + (error instanceof Error ? error.message : 'Unknown'))
     }
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Bạn có chắc muốn xóa prompt này?')) return
+    if (!confirm(t('prompts.deleteConfirm'))) return
     try {
       await deletePrompt(id)
       await loadPrompts()
       await loadMetadata()
-      toast.success('Đã xóa prompt')
+      toast.success(t('toast.deleted'))
     } catch (error) {
-      toast.error('Không thể xóa: ' + (error instanceof Error ? error.message : 'Unknown'))
+      toast.error(t('toast.error') + ': ' + (error instanceof Error ? error.message : 'Unknown'))
     }
   }
 
@@ -121,7 +123,7 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
       await togglePromptFavorite(id)
       await loadPrompts()
     } catch (error) {
-      toast.error('Không thể cập nhật: ' + (error instanceof Error ? error.message : 'Unknown'))
+      toast.error(t('toast.error') + ': ' + (error instanceof Error ? error.message : 'Unknown'))
     }
   }
 
@@ -130,7 +132,7 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
       await togglePromptApproved(id)
       await loadPrompts()
     } catch (error) {
-      toast.error('Không thể cập nhật: ' + (error instanceof Error ? error.message : 'Unknown'))
+      toast.error(t('toast.error') + ': ' + (error instanceof Error ? error.message : 'Unknown'))
     }
   }
 
@@ -141,7 +143,7 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
 
   const handleSync = async () => {
     if (!isConfigured) {
-      toast.warning('Vui lòng cấu hình Prompts Database ID trong cài đặt')
+      toast.warning(t('prompts.configureHint'))
       onOpenSettings?.()
       return
     }
@@ -150,14 +152,14 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
     try {
       const result = await promptSyncService.fullSync()
       if (result.success) {
-        toast.success(`Đồng bộ thành công: +${result.created} / ~${result.updated} / -${result.deleted}`)
+        toast.success(t('prompts.syncResult', { created: result.created, updated: result.updated, deleted: result.deleted }))
         await loadPrompts()
         await loadMetadata()
       } else {
-        toast.error('Lỗi đồng bộ: ' + result.errors.join(', '))
+        toast.error(t('toast.syncError') + ': ' + result.errors.join(', '))
       }
     } catch (error) {
-      toast.error('Lỗi đồng bộ: ' + (error instanceof Error ? error.message : 'Unknown'))
+      toast.error(t('toast.syncError') + ': ' + (error instanceof Error ? error.message : 'Unknown'))
     } finally {
       setIsSyncing(false)
     }
@@ -170,7 +172,7 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
         <SearchBar
           value={searchQuery}
           onChange={setSearchQuery}
-          placeholder="Tìm prompt..."
+          placeholder={t('prompts.search')}
         />
         <button
           onClick={handleSync}
@@ -180,7 +182,7 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
             hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors
             ${isSyncing ? 'opacity-50' : ''}
           `}
-          title="Đồng bộ với Notion"
+          title={t('prompts.syncWithNotion')}
         >
           <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
         </button>
@@ -190,7 +192,7 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
             setShowForm(true)
           }}
           className="p-2 rounded-lg bg-brand text-white hover:bg-brand/90 transition-colors"
-          title="Thêm prompt mới"
+          title={t('prompts.new')}
         >
           <Plus className="w-4 h-4" />
         </button>

@@ -6,7 +6,7 @@ import { changeLanguage } from '@/i18n'
  * Displays in header, persists choice to chrome.storage
  */
 export function LanguageToggle() {
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
   const currentLang = i18n.language
 
   const handleToggle = async (lang: 'en' | 'vi') => {
@@ -35,7 +35,7 @@ export function LanguageToggle() {
             ? 'bg-brand text-white'
             : 'text-[var(--text-secondary)] hover:bg-gray-100 dark:hover:bg-gray-700'
         }`}
-        title="Tiếng Việt"
+        title={t('common.vietnamese')}
       >
         VI
       </button>

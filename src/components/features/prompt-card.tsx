@@ -13,6 +13,7 @@ import {
   ExternalLink,
   CheckCircle,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Tag } from '@/components/shared'
 import type { Prompt } from '@/types'
 
@@ -38,6 +39,7 @@ export function PromptCard({
   onToggleApproved,
   onClick,
 }: PromptCardProps) {
+  const { t } = useTranslation()
   const [showMenu, setShowMenu] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -90,7 +92,7 @@ export function PromptCard({
                     : 'opacity-0 group-hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }
                 `}
-                title="Sao chép prompt"
+                title={t('prompts.copy')}
               >
                 {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
               </button>
@@ -105,7 +107,7 @@ export function PromptCard({
                     : 'opacity-0 group-hover:opacity-100 text-[var(--text-secondary)] hover:text-yellow-500'
                   }
                 `}
-                title={prompt.favorite ? 'Bỏ yêu thích' : 'Yêu thích'}
+                title={prompt.favorite ? t('promptCard.removeFavorite') : t('prompts.favorite')}
               >
                 <Star className={`w-3.5 h-3.5 ${prompt.favorite ? 'fill-current' : ''}`} />
               </button>
@@ -135,7 +137,7 @@ export function PromptCard({
                       className="w-full flex items-center gap-2 px-3 py-1.5 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
-                      Sửa
+                      {t('common.edit')}
                     </button>
                     <button
                       onClick={() => {
@@ -145,7 +147,7 @@ export function PromptCard({
                       className="w-full flex items-center gap-2 px-3 py-1.5 text-sm text-error hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
-                      Xóa
+                      {t('common.delete')}
                     </button>
                   </div>
                 )}
@@ -206,10 +208,10 @@ export function PromptCard({
           <button
             onClick={handleApproved}
             className="flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] rounded-full bg-success/20 text-success"
-            title="Đã duyệt"
+            title={t('promptForm.approved')}
           >
             <CheckCircle className="w-2.5 h-2.5" />
-            Đã duyệt
+            {t('promptForm.approved')}
           </button>
         )}
 

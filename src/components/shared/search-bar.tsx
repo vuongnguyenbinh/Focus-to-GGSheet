@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Search, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface SearchBarProps {
   value: string
@@ -11,9 +12,11 @@ interface SearchBarProps {
 export function SearchBar({
   value,
   onChange,
-  placeholder = 'Tìm kiếm...',
+  placeholder,
   autoFocus = false,
 }: SearchBarProps) {
+  const { t } = useTranslation()
+  const defaultPlaceholder = placeholder ?? t('common.searchPlaceholder')
   const [isFocused, setIsFocused] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -40,7 +43,7 @@ export function SearchBar({
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
+        placeholder={defaultPlaceholder}
         className="flex-1 bg-transparent outline-none text-sm placeholder:text-gray-400"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}

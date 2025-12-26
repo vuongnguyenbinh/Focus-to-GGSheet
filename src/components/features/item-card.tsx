@@ -10,6 +10,7 @@ import {
   Trash2,
   Clock,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Tag, DropdownMenu, DropdownMenuItem } from '@/components/shared'
 import type { Item, Tag as TagType, Priority } from '@/types'
 
@@ -28,10 +29,12 @@ const priorityColors: Record<Priority, string> = {
   low: '#10B981',
 }
 
-const priorityLabels: Record<Priority, string> = {
-  high: 'Cao',
-  medium: 'Trung bình',
-  low: 'Thấp',
+type PriorityLabelKey = 'tasks.priorityHigh' | 'tasks.priorityMedium' | 'tasks.priorityLow'
+
+const priorityLabelKeys: Record<Priority, PriorityLabelKey> = {
+  high: 'tasks.priorityHigh',
+  medium: 'tasks.priorityMedium',
+  low: 'tasks.priorityLow',
 }
 
 export function ItemCard({
@@ -42,17 +45,18 @@ export function ItemCard({
   onDelete,
   onClick,
 }: ItemCardProps) {
-  const itemTags = tags.filter((t) => item.tags.includes(t.id))
+  const { t, i18n } = useTranslation()
+  const itemTags = tags.filter((tag) => item.tags.includes(tag.id))
 
   const formatDeadline = (date: Date) => {
     const now = new Date()
     const diff = date.getTime() - now.getTime()
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24))
 
-    if (days < 0) return 'Quá hạn'
-    if (days === 0) return 'Hôm nay'
-    if (days === 1) return 'Ngày mai'
-    return date.toLocaleDateString('vi-VN', { day: 'numeric', month: 'short' })
+    if (days < 0) return t('card.overdue')
+    if (days === 0) return t('card.today')
+    if (days === 1) return t('card.tomorrow')
+    return date.toLocaleDateString(i18n.language === 'vi' ? 'vi-VN' : 'en-US', { day: 'numeric', month: 'short' })
   }
 
   const isOverdue = item.deadline && new Date(item.deadline) < new Date() && !item.completed
@@ -125,12 +129,12 @@ export function ItemCard({
             >
               <DropdownMenuItem
                 icon={<Edit2 className="w-3.5 h-3.5" />}
-                label="Sửa"
+                label={t('common.edit')}
                 onClick={() => onEdit?.(item)}
               />
               <DropdownMenuItem
                 icon={<Trash2 className="w-3.5 h-3.5" />}
-                label="Xóa"
+                label={t('common.delete')}
                 onClick={() => onDelete?.(item.id)}
                 variant="danger"
               />
@@ -169,7 +173,7 @@ export function ItemCard({
                   color: priorityColors[item.priority],
                 }}
               >
-                {priorityLabels[item.priority]}
+                {t(priorityLabelKeys[item.priority])}
               </span>
             )}
 

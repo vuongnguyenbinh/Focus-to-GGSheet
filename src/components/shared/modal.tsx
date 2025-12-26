@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface ModalProps {
   isOpen: boolean
@@ -16,6 +17,8 @@ interface ModalProps {
  * since they also use Portals with z-index layering
  */
 export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalProps) {
+  const { t } = useTranslation()
+
   // Handle ESC key to close
   useEffect(() => {
     if (!isOpen) return
@@ -74,6 +77,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
               <button
                 onClick={onClose}
                 className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                title={t('common.close')}
               >
                 <X className="w-5 h-5" />
               </button>

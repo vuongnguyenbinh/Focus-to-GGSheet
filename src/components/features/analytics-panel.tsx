@@ -15,6 +15,7 @@ import {
   Tags,
   Briefcase,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { getAllItems } from '@/db/operations/item-operations'
 import { getAllCategories } from '@/db/operations/category-operations'
 import { getAllProjects } from '@/db/operations/project-operations'
@@ -79,6 +80,7 @@ function ProgressBar({ label, value, max, color }: ProgressBarProps) {
 }
 
 export function AnalyticsPanel() {
+  const { t, i18n } = useTranslation()
   const [items, setItems] = useState<Item[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [projects, setProjects] = useState<Project[]>([])
@@ -142,7 +144,7 @@ export function AnalyticsPanel() {
     return (
       <div className="p-4 flex items-center justify-center h-full">
         <div className="animate-pulse-soft text-[var(--text-secondary)]">
-          Đang tải...
+          {t('common.loading')}
         </div>
       </div>
     )
@@ -154,10 +156,10 @@ export function AnalyticsPanel() {
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold flex items-center gap-2">
           <TrendingUp className="w-5 h-5 text-brand" />
-          Thống kê
+          {t('analytics.title')}
         </h2>
         <span className="text-xs text-[var(--text-secondary)]">
-          Cập nhật: {new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+          {t('analytics.updated')}: {new Date().toLocaleTimeString(i18n.language === 'vi' ? 'vi-VN' : 'en-US', { hour: '2-digit', minute: '2-digit' })}
         </span>
       </div>
 
@@ -165,29 +167,29 @@ export function AnalyticsPanel() {
       <div className="grid grid-cols-2 gap-3">
         <StatCard
           icon={<ListTodo className="w-4 h-4 text-white" />}
-          label="Công việc"
+          label={t('analytics.tasks')}
           value={tasks.length}
-          subValue={`${completedTasks.length} hoàn thành`}
+          subValue={t('analytics.completedCount', { count: completedTasks.length })}
           color="bg-blue-500"
           delay={0}
         />
         <StatCard
           icon={<Bookmark className="w-4 h-4 text-white" />}
-          label="Dấu trang"
+          label={t('analytics.bookmarks')}
           value={bookmarks.length}
           color="bg-purple-500"
           delay={50}
         />
         <StatCard
           icon={<FileText className="w-4 h-4 text-white" />}
-          label="Ghi chú"
+          label={t('analytics.notes')}
           value={notes.length}
           color="bg-green-500"
           delay={100}
         />
         <StatCard
           icon={<CheckCircle2 className="w-4 h-4 text-white" />}
-          label="Tỷ lệ hoàn thành"
+          label={t('analytics.completionRate')}
           value={`${completionRate}%`}
           color="bg-brand"
           delay={150}
@@ -198,10 +200,10 @@ export function AnalyticsPanel() {
       <section className="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]">
         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <Clock className="w-4 h-4 text-brand" />
-          Tiến độ công việc
+          {t('analytics.taskProgress')}
         </h3>
         <ProgressBar
-          label="Hoàn thành"
+          label={t('analytics.completed')}
           value={completedTasks.length}
           max={tasks.length}
           color="bg-brand"
@@ -211,13 +213,13 @@ export function AnalyticsPanel() {
       {/* Priority Breakdown */}
       {(highPriority.length > 0 || mediumPriority.length > 0 || lowPriority.length > 0) && (
         <section className="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]">
-          <h3 className="text-sm font-semibold mb-3">Theo độ ưu tiên</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('analytics.byPriority')}</h3>
           <div className="space-y-2">
             {highPriority.length > 0 && (
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-red-500" />
-                  <span>Cao</span>
+                  <span>{t('tasks.priorityHigh')}</span>
                 </div>
                 <span className="font-medium text-red-500">{highPriority.length}</span>
               </div>
@@ -226,7 +228,7 @@ export function AnalyticsPanel() {
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-yellow-500" />
-                  <span>Trung bình</span>
+                  <span>{t('tasks.priorityMedium')}</span>
                 </div>
                 <span className="font-medium text-yellow-600">{mediumPriority.length}</span>
               </div>
@@ -235,7 +237,7 @@ export function AnalyticsPanel() {
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-green-500" />
-                  <span>Thấp</span>
+                  <span>{t('tasks.priorityLow')}</span>
                 </div>
                 <span className="font-medium text-green-600">{lowPriority.length}</span>
               </div>
@@ -248,45 +250,45 @@ export function AnalyticsPanel() {
       <section className="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]">
         <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <Calendar className="w-4 h-4 text-brand" />
-          Hoạt động
+          {t('analytics.activity')}
         </h3>
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-[var(--text-secondary)]">Hôm nay</span>
-            <span className="font-medium">{todaysTasks.length} công việc</span>
+            <span className="text-[var(--text-secondary)]">{t('analytics.today')}</span>
+            <span className="font-medium">{t('analytics.tasksCount', { count: todaysTasks.length })}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-[var(--text-secondary)]">7 ngày qua</span>
-            <span className="font-medium">{recentItems.length} mục mới</span>
+            <span className="text-[var(--text-secondary)]">{t('analytics.last7Days')}</span>
+            <span className="font-medium">{t('analytics.newItemsCount', { count: recentItems.length })}</span>
           </div>
         </div>
       </section>
 
       {/* Metadata Summary */}
       <section className="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]">
-        <h3 className="text-sm font-semibold mb-3">Tổ chức</h3>
+        <h3 className="text-sm font-semibold mb-3">{t('analytics.organization')}</h3>
         <div className="grid grid-cols-3 gap-2">
           <div className="text-center p-2 rounded-lg bg-[var(--bg-primary)]">
             <FolderOpen className="w-4 h-4 mx-auto mb-1 text-[var(--text-secondary)]" />
             <span className="text-lg font-bold">{categories.length}</span>
-            <p className="text-[10px] text-[var(--text-secondary)]">Danh mục</p>
+            <p className="text-[10px] text-[var(--text-secondary)]">{t('analytics.categories')}</p>
           </div>
           <div className="text-center p-2 rounded-lg bg-[var(--bg-primary)]">
             <Briefcase className="w-4 h-4 mx-auto mb-1 text-[var(--text-secondary)]" />
             <span className="text-lg font-bold">{projects.length}</span>
-            <p className="text-[10px] text-[var(--text-secondary)]">Dự án</p>
+            <p className="text-[10px] text-[var(--text-secondary)]">{t('analytics.projects')}</p>
           </div>
           <div className="text-center p-2 rounded-lg bg-[var(--bg-primary)]">
             <Tags className="w-4 h-4 mx-auto mb-1 text-[var(--text-secondary)]" />
             <span className="text-lg font-bold">{tags.length}</span>
-            <p className="text-[10px] text-[var(--text-secondary)]">Nhãn</p>
+            <p className="text-[10px] text-[var(--text-secondary)]">{t('analytics.tags')}</p>
           </div>
         </div>
       </section>
 
       {/* Total Summary */}
       <div className="text-center text-xs text-[var(--text-secondary)] pt-2 border-t border-[var(--border-color)]">
-        Tổng cộng: <span className="font-semibold">{items.length}</span> mục
+        {t('analytics.total')}: <span className="font-semibold">{items.length}</span> {t('analytics.items')}
       </div>
     </div>
   )

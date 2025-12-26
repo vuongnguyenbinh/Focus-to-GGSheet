@@ -3,6 +3,7 @@
  */
 
 import { FileText, Image, Video } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { PromptType } from '@/types'
 
 interface PromptTabBarProps {
@@ -11,16 +12,19 @@ interface PromptTabBarProps {
   counts?: Record<PromptType, number>
 }
 
-const tabs: { id: PromptType; label: string; icon: typeof FileText }[] = [
-  { id: 'text', label: 'Văn bản', icon: FileText },
-  { id: 'image', label: 'Hình ảnh', icon: Image },
-  { id: 'video', label: 'Video', icon: Video },
+type TabLabelKey = 'promptForm.typeText' | 'promptForm.typeImage' | 'promptForm.typeVideo'
+
+const tabConfig: { id: PromptType; labelKey: TabLabelKey; icon: typeof FileText }[] = [
+  { id: 'text', labelKey: 'promptForm.typeText', icon: FileText },
+  { id: 'image', labelKey: 'promptForm.typeImage', icon: Image },
+  { id: 'video', labelKey: 'promptForm.typeVideo', icon: Video },
 ]
 
 export function PromptTabBar({ activeTab, onTabChange, counts }: PromptTabBarProps) {
+  const { t } = useTranslation()
   return (
     <div className="flex border-b border-[var(--border-color)]">
-      {tabs.map((tab) => {
+      {tabConfig.map((tab) => {
         const Icon = tab.icon
         const isActive = activeTab === tab.id
         const count = counts?.[tab.id] ?? 0
@@ -39,7 +43,7 @@ export function PromptTabBar({ activeTab, onTabChange, counts }: PromptTabBarPro
             `}
           >
             <Icon className="w-4 h-4" />
-            <span>{tab.label}</span>
+            <span>{t(tab.labelKey)}</span>
             {count > 0 && (
               <span
                 className={`

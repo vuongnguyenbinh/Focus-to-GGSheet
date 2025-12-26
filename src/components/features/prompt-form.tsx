@@ -4,6 +4,7 @@
 
 import { useState } from 'react'
 import { X, Tag as TagIcon, Plus, Star, Copy, Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Button, Input, Select, Tag, IconPicker } from '@/components/shared'
 import type { Prompt, PromptType, PromptFormData, QualityRating } from '@/types'
 
@@ -16,20 +17,13 @@ interface PromptFormProps {
   onCancel: () => void
 }
 
-const typeLabels: Record<PromptType, string> = {
-  text: 'Văn bản',
-  image: 'Hình ảnh',
-  video: 'Video',
-}
+type PromptTypeLabelKey = 'promptForm.typeText' | 'promptForm.typeImage' | 'promptForm.typeVideo'
 
-const qualityOptions = [
-  { value: '', label: 'Không đánh giá' },
-  { value: '1', label: '★☆☆☆☆ (1)' },
-  { value: '2', label: '★★☆☆☆ (2)' },
-  { value: '3', label: '★★★☆☆ (3)' },
-  { value: '4', label: '★★★★☆ (4)' },
-  { value: '5', label: '★★★★★ (5)' },
-]
+const typeLabelKeys: Record<PromptType, PromptTypeLabelKey> = {
+  text: 'promptForm.typeText',
+  image: 'promptForm.typeImage',
+  video: 'promptForm.typeVideo',
+}
 
 export function PromptForm({
   type,
@@ -39,6 +33,16 @@ export function PromptForm({
   onSubmit,
   onCancel,
 }: PromptFormProps) {
+  const { t } = useTranslation()
+
+  const qualityOptions = [
+    { value: '', label: t('promptForm.noRating') },
+    { value: '1', label: '★☆☆☆☆ (1)' },
+    { value: '2', label: '★★☆☆☆ (2)' },
+    { value: '3', label: '★★★☆☆ (3)' },
+    { value: '4', label: '★★★★☆ (4)' },
+    { value: '5', label: '★★★★★ (5)' },
+  ]
   // Use prompt's type when editing, otherwise use the current tab type
   const effectiveType = prompt?.type || type
 
@@ -117,7 +121,7 @@ export function PromptForm({
 
   // Include current category in options (for newly created categories not yet in database)
   const categoryOptions = [
-    { value: '', label: 'Không có' },
+    { value: '', label: t('form.noCategory') },
     ...categories.map((c) => ({ value: c, label: c })),
     // Add current category if it's not in the list (newly created)
     ...(category && !categories.includes(category) ? [{ value: category, label: category }] : []),
@@ -127,7 +131,7 @@ export function PromptForm({
     <form onSubmit={handleSubmit} className="space-y-4 max-h-[80vh] overflow-y-auto">
       <div className="flex items-center justify-between pb-2 border-b border-[var(--border-color)]">
         <h2 className="text-lg font-semibold">
-          {isEditing ? 'Sửa' : 'Thêm'} prompt {typeLabels[effectiveType]}
+          {isEditing ? t('form.edit') : t('form.add')} prompt {t(typeLabelKeys[effectiveType])}
         </h2>
         <button
           type="button"
@@ -140,26 +144,26 @@ export function PromptForm({
 
       {/* Title */}
       <Input
-        label="Tiêu đề"
+        label={t('form.title')}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Nhập tiêu đề prompt..."
+        placeholder={t('promptForm.titlePlaceholder')}
         required
         autoFocus
       />
 
       {/* Description */}
       <Input
-        label="Mô tả ngắn"
+        label={t('promptForm.description')}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="Mô tả ngắn về prompt..."
+        placeholder={t('promptForm.descriptionPlaceholder')}
       />
 
       {/* Main Prompt Content */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label className="text-sm font-medium">Nội dung Prompt *</label>
+          <label className="text-sm font-medium">{t('promptForm.content')} *</label>
           <button
             type="button"
             onClick={handleCopy}
@@ -172,13 +176,13 @@ export function PromptForm({
             `}
           >
             {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-            {copied ? 'Đã sao chép' : 'Sao chép'}
+            {copied ? t('prompts.copied') : t('prompts.copy')}
           </button>
         </div>
         <textarea
           value={promptContent}
           onChange={(e) => setPromptContent(e.target.value)}
-          placeholder="Nhập nội dung prompt..."
+          placeholder={t('promptForm.contentPlaceholder')}
           rows={6}
           required
           className="
@@ -193,14 +197,14 @@ export function PromptForm({
       {/* Category with inline create */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label className="text-sm font-medium">Danh mục</label>
+          <label className="text-sm font-medium">{t('form.category')}</label>
           <button
             type="button"
             onClick={() => setShowNewCategory(!showNewCategory)}
             className="text-xs text-brand hover:underline flex items-center gap-0.5"
           >
             <Plus className="w-3 h-3" />
-            Tạo mới
+            {t('form.createNew')}
           </button>
         </div>
         {showNewCategory ? (
@@ -214,12 +218,12 @@ export function PromptForm({
               type="text"
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
-              placeholder="Tên danh mục mới..."
+              placeholder={t('form.categoryPlaceholder')}
               className="flex-1 h-8 px-2 text-sm rounded border bg-[var(--bg-secondary)] border-[var(--border-color)] focus:border-brand focus:outline-none"
               onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCategory())}
               autoFocus
             />
-            <Button type="button" variant="primary" size="sm" onClick={handleAddCategory}>Thêm</Button>
+            <Button type="button" variant="primary" size="sm" onClick={handleAddCategory}>{t('common.add')}</Button>
             <button type="button" onClick={() => setShowNewCategory(false)} className="p-1 text-gray-400 hover:text-gray-600">
               <X className="w-4 h-4" />
             </button>
@@ -238,7 +242,7 @@ export function PromptForm({
         <div className="flex items-center justify-between mb-1.5">
           <label className="text-sm font-medium flex items-center gap-1">
             <TagIcon className="w-3.5 h-3.5" />
-            Nhãn
+            {t('form.tags')}
           </label>
         </div>
 
@@ -257,7 +261,7 @@ export function PromptForm({
             className="flex items-center gap-1 px-2 py-1 text-xs text-[var(--text-secondary)] hover:text-brand transition-colors"
           >
             <TagIcon className="w-3 h-3" />
-            Chọn nhãn
+            {t('form.selectTags')}
           </button>
         </div>
 
@@ -269,11 +273,11 @@ export function PromptForm({
                 type="text"
                 value={newTag}
                 onChange={(e) => setNewTag(e.target.value)}
-                placeholder="Thêm nhãn mới..."
+                placeholder={t('form.tagPlaceholder')}
                 className="flex-1 h-8 px-2 text-sm rounded border bg-[var(--bg-primary)] border-[var(--border-color)] focus:border-brand focus:outline-none"
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
               />
-              <Button type="button" variant="primary" size="sm" onClick={handleAddTag}>Thêm</Button>
+              <Button type="button" variant="primary" size="sm" onClick={handleAddTag}>{t('common.add')}</Button>
             </div>
             {/* Existing tags */}
             {tags.length > 0 && (
@@ -294,11 +298,11 @@ export function PromptForm({
 
       {/* Note */}
       <div>
-        <label className="block text-sm font-medium mb-1.5">Ghi chú</label>
+        <label className="block text-sm font-medium mb-1.5">{t('promptForm.note')}</label>
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          placeholder="Ghi chú thêm về prompt..."
+          placeholder={t('promptForm.notePlaceholder')}
           rows={2}
           className="
             w-full px-3 py-2 rounded-lg border resize-none
@@ -312,14 +316,14 @@ export function PromptForm({
       {/* Quality & Status */}
       <div className="grid grid-cols-2 gap-3">
         <Select
-          label="Đánh giá chất lượng"
+          label={t('promptForm.quality')}
           value={quality}
           onChange={(e) => setQuality(e.target.value)}
           options={qualityOptions}
         />
 
         <div>
-          <label className="block text-sm font-medium mb-1.5">Trạng thái</label>
+          <label className="block text-sm font-medium mb-1.5">{t('promptForm.status')}</label>
           <div className="flex gap-2">
             <button
               type="button"
@@ -333,7 +337,7 @@ export function PromptForm({
               `}
             >
               <Check className="w-4 h-4" />
-              {approved ? 'Đã duyệt' : 'Duyệt'}
+              {approved ? t('promptForm.approved') : t('promptForm.approve')}
             </button>
             <button
               type="button"
@@ -347,7 +351,7 @@ export function PromptForm({
               `}
             >
               <Star className={`w-4 h-4 ${favorite ? 'fill-current' : ''}`} />
-              {favorite ? 'Yêu thích' : 'Thích'}
+              {favorite ? t('prompts.favorite') : t('promptForm.like')}
             </button>
           </div>
         </div>
@@ -355,7 +359,7 @@ export function PromptForm({
 
       {/* Demo fields */}
       <div className="space-y-3 pt-2 border-t border-[var(--border-color)]">
-        <p className="text-xs text-[var(--text-secondary)]">Demo (tùy chọn)</p>
+        <p className="text-xs text-[var(--text-secondary)]">{t('promptForm.demoOptional')}</p>
 
         <Input
           label="URL Demo"
@@ -366,11 +370,11 @@ export function PromptForm({
         />
 
         <div>
-          <label className="block text-sm font-medium mb-1.5">Text Demo</label>
+          <label className="block text-sm font-medium mb-1.5">{t('promptForm.textDemo')}</label>
           <textarea
             value={textDemo}
             onChange={(e) => setTextDemo(e.target.value)}
-            placeholder="Kết quả mẫu từ prompt..."
+            placeholder={t('promptForm.textDemoPlaceholder')}
             rows={2}
             className="
               w-full px-3 py-2 rounded-lg border resize-none
@@ -384,14 +388,14 @@ export function PromptForm({
         {/* File demo (display only, from Notion) */}
         {prompt?.fileDemo && (
           <div>
-            <label className="block text-sm font-medium mb-1.5">File Demo (từ Notion)</label>
+            <label className="block text-sm font-medium mb-1.5">{t('promptForm.fileDemo')}</label>
             <a
               href={prompt.fileDemo}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-brand hover:underline"
             >
-              Xem file
+              {t('promptForm.viewFile')}
             </a>
           </div>
         )}
@@ -400,10 +404,10 @@ export function PromptForm({
       {/* Actions */}
       <div className="flex gap-2 pt-2">
         <Button type="button" variant="secondary" onClick={onCancel} fullWidth>
-          Hủy
+          {t('common.cancel')}
         </Button>
         <Button type="submit" variant="primary" fullWidth>
-          {isEditing ? 'Lưu' : 'Thêm'}
+          {isEditing ? t('common.save') : t('common.add')}
         </Button>
       </div>
     </form>

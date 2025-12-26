@@ -5,6 +5,7 @@
 
 import { useState } from 'react'
 import { Filter, X, ChevronDown, ChevronUp, Tag as TagIcon, FolderOpen, Briefcase } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Tag, CategoryIcon, CATEGORY_ICONS } from '@/components/shared'
 import type { Category, Project, Tag as TagType, FilterState, ItemType } from '@/types'
 
@@ -28,6 +29,7 @@ export function FilterPanel({
   activeTab,
   onChange,
 }: FilterPanelProps) {
+  const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
 
   // Count active filters
@@ -76,7 +78,7 @@ export function FilterPanel({
       >
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-[var(--text-secondary)]" />
-          <span className="font-medium">Bộ lọc</span>
+          <span className="font-medium">{t('filter.title')}</span>
           {activeFilterCount > 0 && (
             <span className="px-1.5 py-0.5 text-[10px] bg-brand text-white rounded-full">
               {activeFilterCount}
@@ -100,7 +102,7 @@ export function FilterPanel({
               className="flex items-center gap-1 text-xs text-error hover:underline"
             >
               <X className="w-3 h-3" />
-              Xóa tất cả bộ lọc
+              {t('filter.clearAll')}
             </button>
           )}
 
@@ -108,13 +110,13 @@ export function FilterPanel({
           {activeTab === 'task' && (
             <div>
               <label className="text-xs font-medium text-[var(--text-secondary)] mb-1.5 block">
-                Trạng thái
+                {t('filter.status')}
               </label>
               <div className="flex gap-1">
                 {[
-                  { value: 'all', label: 'Tất cả' },
-                  { value: 'pending', label: 'Đang làm' },
-                  { value: 'completed', label: 'Hoàn thành' },
+                  { value: 'all', label: t('common.all') },
+                  { value: 'pending', label: t('filter.statusPending') },
+                  { value: 'completed', label: t('filter.statusCompleted') },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -139,7 +141,7 @@ export function FilterPanel({
             <div>
               <label className="text-xs font-medium text-[var(--text-secondary)] mb-1.5 flex items-center gap-1">
                 <FolderOpen className="w-3 h-3" />
-                Danh mục
+                {t('filter.category')}
               </label>
               <div className="flex flex-wrap gap-1">
                 <button
@@ -152,7 +154,7 @@ export function FilterPanel({
                     }
                   `}
                 >
-                  Tất cả
+                  {t('common.all')}
                 </button>
                 {categories.map((category) => (
                   <button
@@ -183,7 +185,7 @@ export function FilterPanel({
             <div>
               <label className="text-xs font-medium text-[var(--text-secondary)] mb-1.5 flex items-center gap-1">
                 <Briefcase className="w-3 h-3" />
-                Dự án
+                {t('filter.project')}
               </label>
               <div className="flex flex-wrap gap-1">
                 <button
@@ -196,7 +198,7 @@ export function FilterPanel({
                     }
                   `}
                 >
-                  Tất cả
+                  {t('common.all')}
                 </button>
                 {projects.map((project) => (
                   <button
@@ -226,7 +228,7 @@ export function FilterPanel({
             <div>
               <label className="text-xs font-medium text-[var(--text-secondary)] mb-1.5 flex items-center gap-1">
                 <TagIcon className="w-3 h-3" />
-                Nhãn
+                {t('filter.tags')}
               </label>
               <div className="flex flex-wrap gap-1">
                 {tags.map((tag) => (
@@ -252,7 +254,7 @@ export function FilterPanel({
           {/* Empty state */}
           {categories.length === 0 && projects.length === 0 && tags.length === 0 && activeTab !== 'task' && (
             <p className="text-xs text-[var(--text-secondary)] text-center py-2">
-              Chưa có danh mục, dự án hoặc nhãn nào
+              {t('filter.noFilters')}
             </p>
           )}
         </div>
