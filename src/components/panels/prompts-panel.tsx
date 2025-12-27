@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react'
-import { Plus, RefreshCw } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { SearchBar, Modal } from '@/components/shared'
 import {
@@ -23,16 +23,15 @@ import {
   getPromptCategories,
   getPromptTags,
 } from '@/db/operations/prompt-operations'
-import { sheetsSyncService } from '@/services/gsheets'
 import { useToast } from '@/stores/toast-context'
 import type { Prompt, PromptType, PromptFormData, PromptFilterState } from '@/types'
 
+// Note: Sync is handled by Header component which syncs both items and prompts
 interface PromptsPanelProps {
-  isConfigured: boolean
-  onOpenSettings?: () => void
+  // Props kept for compatibility but no longer used for sync
 }
 
-export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps) {
+export function PromptsPanel(_props: PromptsPanelProps) {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<PromptType>('text')
   const [prompts, setPrompts] = useState<Prompt[]>([])
@@ -47,7 +46,6 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
   })
   const [showForm, setShowForm] = useState(false)
   const [editingPrompt, setEditingPrompt] = useState<Prompt | null>(null)
-  const [isSyncing, setIsSyncing] = useState(false)
 
   const toast = useToast()
 
@@ -141,51 +139,27 @@ export function PromptsPanel({ isConfigured, onOpenSettings }: PromptsPanelProps
     setShowForm(true)
   }
 
-  const handleSync = async () => {
-    if (!isConfigured) {
-      toast.warning(t('prompts.configureHint'))
-      onOpenSettings?.()
-      return
-    }
-
-    setIsSyncing(true)
-    try {
-      const result = await sheetsSyncService.fullSync()
-      if (result.success) {
-        toast.success(t('prompts.syncResult', { created: result.created, updated: result.updated, deleted: result.deleted }))
-        await loadPrompts()
-        await loadMetadata()
-      } else {
-        toast.error(t('toast.syncError') + ': ' + result.errors.join(', '))
+  // Listen for sync completion from background
+  useEffect(() => {
+    const handleMessage = (message: { type: string }) => {
+      if (message.type === 'SYNC_COMPLETE') {
+        loadPrompts()
+        loadMetadata()
       }
-    } catch (error) {
-      toast.error(t('toast.syncError') + ': ' + (error instanceof Error ? error.message : 'Unknown'))
-    } finally {
-      setIsSyncing(false)
     }
-  }
+    chrome.runtime.onMessage.addListener(handleMessage)
+    return () => chrome.runtime.onMessage.removeListener(handleMessage)
+  }, [loadPrompts, loadMetadata])
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
+      {/* Header - sync handled by main Header component */}
       <div className="flex items-center gap-2 px-3 py-2 border-b border-[var(--border-color)]">
         <SearchBar
           value={searchQuery}
           onChange={setSearchQuery}
           placeholder={t('prompts.search')}
         />
-        <button
-          onClick={handleSync}
-          disabled={isSyncing}
-          className={`
-            p-2 rounded-lg border border-[var(--border-color)]
-            hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors
-            ${isSyncing ? 'opacity-50' : ''}
-          `}
-          title={t('settings.syncNow')}
-        >
-          <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
-        </button>
         <button
           onClick={() => {
             setEditingPrompt(null)

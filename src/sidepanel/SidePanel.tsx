@@ -18,7 +18,7 @@ import {
 import { getAllCategories } from '@/db/operations/category-operations'
 import { getAllProjects } from '@/db/operations/project-operations'
 import { getAllTags } from '@/db/operations/tag-operations'
-import { getSettings } from '@/db/operations/settings-operations'
+// Settings operations no longer needed here - sync config checked in background
 import type {
   Item,
   ItemType,
@@ -46,7 +46,6 @@ function SidePanelContent() {
   const [categories, setCategories] = useState<Category[]>([])
   const [projects, setProjects] = useState<Project[]>([])
   const [tags, setTags] = useState<Tag[]>([])
-  const [promptsConfigured, setPromptsConfigured] = useState(false)
 
   // Filter state
   const [filter, setFilter] = useState<FilterState>({
@@ -73,18 +72,16 @@ function SidePanelContent() {
   // Load data
   const loadData = useCallback(async () => {
     try {
-      const [itemsData, categoriesData, projectsData, tagsData, settingsData] = await Promise.all([
+      const [itemsData, categoriesData, projectsData, tagsData] = await Promise.all([
         getAllItems(),
         getAllCategories(),
         getAllProjects(),
         getAllTags(),
-        getSettings(),
       ])
       setItems(itemsData)
       setCategories(categoriesData)
       setProjects(projectsData)
       setTags(tagsData)
-      setPromptsConfigured(!!(settingsData.notionToken && settingsData.promptsDatabaseId))
     } catch (error) {
       console.error('Failed to load data:', error)
       toast.error('Không thể tải dữ liệu')
@@ -225,11 +222,6 @@ function SidePanelContent() {
   // Count tasks
   const taskCount = items.filter((i) => i.type === 'task' && !i.completed).length
 
-  // Handle opening settings (for PromptsPanel)
-  const handleOpenSettings = () => {
-    setFooterTab('settings')
-  }
-
   // Handle opening author modal
   const handleOpenAuthorModal = (tab: AuthorModalTab) => {
     setAuthorModalTab(tab)
@@ -299,11 +291,8 @@ function SidePanelContent() {
             )}
           </>
         ) : activeModule === 'prompts' ? (
-          // Prompts module
-          <PromptsPanel
-            isConfigured={promptsConfigured}
-            onOpenSettings={handleOpenSettings}
-          />
+          // Prompts module - sync handled by Header
+          <PromptsPanel />
         ) : (
           // Items module
           <DropZone onDrop={handleUrlDrop} isLoading={isLoadingUrl} className="h-full">
