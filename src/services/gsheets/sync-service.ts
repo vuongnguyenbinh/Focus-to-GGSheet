@@ -174,12 +174,16 @@ class SheetsSyncService {
         }
 
         const rowData = itemToSheetRow(item, metadata)
+        console.log(`[SheetsSync] ${queueItem.operation} item:`, item.id, item.title)
+        console.log('[SheetsSync] Row data:', JSON.stringify(rowData))
 
         if (queueItem.operation === 'create') {
-          await sheetsClient.createItem(rowData)
+          const createResult = await sheetsClient.createItem(rowData)
+          console.log('[SheetsSync] Create result:', JSON.stringify(createResult))
           result.created++
         } else {
-          await sheetsClient.updateItem(rowData)
+          const updateResult = await sheetsClient.updateItem(rowData)
+          console.log('[SheetsSync] Update result:', JSON.stringify(updateResult))
           result.updated++
         }
 

@@ -94,7 +94,14 @@ function doPost(e) {
   try {
     validateSecret(e);
 
+    // Debug logging - remove after fixing
+    Logger.log('=== doPost DEBUG ===');
+    Logger.log('postData.contents: ' + (e.postData ? e.postData.contents : 'NO POST DATA'));
+
     const payload = JSON.parse(e.postData.contents);
+    Logger.log('Parsed payload: ' + JSON.stringify(payload));
+    Logger.log('Action: ' + payload.action);
+    Logger.log('Data: ' + JSON.stringify(payload.data));
     const action = payload.action;
 
     let result;
@@ -135,8 +142,12 @@ function doPost(e) {
         throw new Error('Unknown action: ' + action);
     }
 
+    Logger.log('Result: ' + JSON.stringify(result));
+    Logger.log('=== doPost END ===');
     return jsonResponse({ success: true, data: result });
   } catch (error) {
+    Logger.log('ERROR in doPost: ' + error.message);
+    Logger.log('Stack: ' + error.stack);
     return jsonResponse({ success: false, error: error.message });
   }
 }
@@ -259,8 +270,30 @@ function getSheetData(sheetName, sinceTimestamp) {
  * @returns {Object} Result with id and rowIndex
  */
 function createRow(sheetName, data, defaultHeaders) {
+  Logger.log('[createRow] START - sheetName: ' + sheetName);
+  Logger.log('[createRow] data keys: ' + Object.keys(data).join(', '));
+  Logger.log('[createRow] data.ID: ' + data.ID);
+
   const sheet = getSheet(sheetName);
-  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  Logger.log('[createRow] Sheet found: ' + sheet.getName());
+
+  // Get headers - handle empty sheet case
+  let headers;
+  const lastCol = sheet.getLastColumn();
+  const lastRow = sheet.getLastRow();
+  Logger.log('[createRow] lastCol: ' + lastCol + ', lastRow: ' + lastRow);
+
+  if (lastCol === 0) {
+    // Sheet is empty, add headers first
+    Logger.log('[createRow] Sheet empty, adding headers');
+    sheet.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders]);
+    sheet.getRange(1, 1, 1, defaultHeaders.length).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+    headers = defaultHeaders;
+  } else {
+    headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+    Logger.log('[createRow] Existing headers: ' + headers.join(', '));
+  }
 
   // Map data to row array based on headers
   const newRow = headers.map(header => {
@@ -270,11 +303,16 @@ function createRow(sheetName, data, defaultHeaders) {
     return data[header] !== undefined ? data[header] : '';
   });
 
+  Logger.log('[createRow] newRow: ' + JSON.stringify(newRow));
+
   sheet.appendRow(newRow);
+
+  const finalLastRow = sheet.getLastRow();
+  Logger.log('[createRow] Row appended, new lastRow: ' + finalLastRow);
 
   return {
     id: data.ID,
-    rowIndex: sheet.getLastRow(),
+    rowIndex: finalLastRow,
     created: true,
   };
 }
@@ -288,6 +326,14 @@ function createRow(sheetName, data, defaultHeaders) {
  */
 function updateRow(sheetName, data, defaultHeaders) {
   const sheet = getSheet(sheetName);
+
+  // Handle empty sheet - if no data, create with headers
+  const lastCol = sheet.getLastColumn();
+  if (lastCol === 0) {
+    // Sheet is empty, create row instead
+    return createRow(sheetName, data, defaultHeaders);
+  }
+
   const allData = sheet.getDataRange().getValues();
   const headers = allData[0];
   const idIndex = headers.indexOf('ID');
@@ -449,4 +495,191 @@ function testSetup() {
   Logger.log('Prompts Sheet: ' + (sheetExists(CONFIG.PROMPTS_SHEET) ? 'EXISTS' : 'NOT FOUND'));
   Logger.log('Secret configured: ' + (CONFIG.SECRET !== 'CHANGE_THIS_SECRET_KEY_123' ? 'YES' : 'NO - PLEASE CHANGE!'));
   Logger.log('===================================');
+}
+
+// ============================================
+// DEBUG & TEST FUNCTIONS
+// ============================================
+
+/**
+ * Inspect sheet state - run this to see current sheet configuration
+ */
+function debugInspectSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  Logger.log('=== SHEET INSPECTION ===');
+  Logger.log('Spreadsheet Name: ' + ss.getName());
+  Logger.log('Spreadsheet ID: ' + ss.getId());
+
+  const sheets = ss.getSheets();
+  Logger.log('Total sheets: ' + sheets.length);
+
+  sheets.forEach((sheet, idx) => {
+    const name = sheet.getName();
+    const lastRow = sheet.getLastRow();
+    const lastCol = sheet.getLastColumn();
+    Logger.log('');
+    Logger.log('Sheet ' + (idx + 1) + ': "' + name + '"');
+    Logger.log('  Last Row: ' + lastRow);
+    Logger.log('  Last Column: ' + lastCol);
+
+    if (lastCol > 0 && lastRow > 0) {
+      const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+      Logger.log('  Headers: ' + JSON.stringify(headers));
+
+      if (lastRow > 1) {
+        const firstDataRow = sheet.getRange(2, 1, 1, lastCol).getValues()[0];
+        Logger.log('  First data row: ' + JSON.stringify(firstDataRow));
+      }
+    } else {
+      Logger.log('  Sheet is empty!');
+    }
+  });
+
+  Logger.log('========================');
+}
+
+/**
+ * Test creating a sample item - run this to test the createRow function
+ */
+function debugTestCreateItem() {
+  Logger.log('=== TEST CREATE ITEM ===');
+
+  const testData = {
+    ID: 'test-' + Date.now(),
+    Type: 'task',
+    Title: 'Test Task from Apps Script',
+    Content: 'This is a test task created manually',
+    URL: '',
+    Priority: 'medium',
+    Deadline: '',
+    Completed: 'FALSE',
+    Tags: 'test,debug',
+    Category: 'Test Category',
+    Project: 'Test Project',
+    UpdatedAt: new Date().toISOString()
+  };
+
+  Logger.log('Test data: ' + JSON.stringify(testData));
+
+  try {
+    ensureSheet(CONFIG.ITEMS_SHEET, ITEMS_HEADERS);
+    Logger.log('Sheet ensured');
+
+    const result = createRow(CONFIG.ITEMS_SHEET, testData, ITEMS_HEADERS);
+    Logger.log('Result: ' + JSON.stringify(result));
+    Logger.log('SUCCESS! Check the Items sheet for the new row.');
+  } catch (error) {
+    Logger.log('ERROR: ' + error.message);
+    Logger.log('Stack: ' + error.stack);
+  }
+
+  Logger.log('========================');
+}
+
+/**
+ * Debug version of createRow with extensive logging
+ */
+function debugCreateRow(sheetName, data, defaultHeaders) {
+  Logger.log('--- debugCreateRow START ---');
+  Logger.log('sheetName: ' + sheetName);
+  Logger.log('data: ' + JSON.stringify(data));
+  Logger.log('defaultHeaders: ' + JSON.stringify(defaultHeaders));
+
+  const sheet = getSheet(sheetName);
+  Logger.log('Sheet found: ' + sheet.getName());
+
+  const lastCol = sheet.getLastColumn();
+  const lastRow = sheet.getLastRow();
+  Logger.log('lastCol: ' + lastCol + ', lastRow: ' + lastRow);
+
+  let headers;
+  if (lastCol === 0) {
+    Logger.log('Sheet is empty, adding headers...');
+    sheet.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders]);
+    sheet.getRange(1, 1, 1, defaultHeaders.length).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+    headers = defaultHeaders;
+    Logger.log('Headers added');
+  } else {
+    headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+    Logger.log('Existing headers: ' + JSON.stringify(headers));
+  }
+
+  // Map data to row
+  const newRow = [];
+  for (let i = 0; i < headers.length; i++) {
+    const header = headers[i];
+    let value;
+    if (header === 'UpdatedAt' && !data[header]) {
+      value = new Date().toISOString();
+    } else {
+      value = data[header] !== undefined ? data[header] : '';
+    }
+    newRow.push(value);
+    Logger.log('  ' + header + ' = ' + value);
+  }
+
+  Logger.log('newRow: ' + JSON.stringify(newRow));
+  Logger.log('newRow length: ' + newRow.length);
+
+  // Append the row
+  sheet.appendRow(newRow);
+  const newLastRow = sheet.getLastRow();
+  Logger.log('Row appended. New lastRow: ' + newLastRow);
+
+  // Verify the row was written
+  const verifyRow = sheet.getRange(newLastRow, 1, 1, headers.length).getValues()[0];
+  Logger.log('Verify row content: ' + JSON.stringify(verifyRow));
+
+  Logger.log('--- debugCreateRow END ---');
+
+  return {
+    id: data.ID,
+    rowIndex: newLastRow,
+    created: true,
+  };
+}
+
+/**
+ * Test using the debug version of createRow
+ */
+function debugTestCreateItemVerbose() {
+  Logger.log('=== VERBOSE TEST CREATE ITEM ===');
+
+  const testData = {
+    ID: 'verbose-test-' + Date.now(),
+    Type: 'note',
+    Title: 'Verbose Test Note',
+    Content: 'Testing with verbose logging',
+    URL: '',
+    Priority: '',
+    Deadline: '',
+    Completed: 'FALSE',
+    Tags: '',
+    Category: '',
+    Project: '',
+    UpdatedAt: ''
+  };
+
+  try {
+    ensureSheet(CONFIG.ITEMS_SHEET, ITEMS_HEADERS);
+    const result = debugCreateRow(CONFIG.ITEMS_SHEET, testData, ITEMS_HEADERS);
+    Logger.log('Final Result: ' + JSON.stringify(result));
+  } catch (error) {
+    Logger.log('ERROR: ' + error.message);
+    Logger.log('Stack: ' + error.stack);
+  }
+
+  Logger.log('================================');
+}
+
+/**
+ * Check if incoming data from extension matches expected format
+ * Add this to doPost to log incoming requests
+ */
+function debugLogRequest(e) {
+  Logger.log('=== INCOMING REQUEST ===');
+  Logger.log('Parameter: ' + JSON.stringify(e.parameter));
+  Logger.log('PostData contents: ' + (e.postData ? e.postData.contents : 'NO POST DATA'));
+  Logger.log('========================');
 }
