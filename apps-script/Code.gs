@@ -89,16 +89,29 @@ function doGet(e) {
 /**
  * Handle POST requests
  * Actions: createItem, updateItem, deleteItem, createPrompt, updatePrompt, deletePrompt, batch
+ *
+ * Note: Client sends data as application/x-www-form-urlencoded with 'payload' parameter
+ * to avoid CORS preflight. Parse from e.parameter.payload.
  */
 function doPost(e) {
   try {
     validateSecret(e);
 
-    // Debug logging - remove after fixing
-    Logger.log('=== doPost DEBUG ===');
-    Logger.log('postData.contents: ' + (e.postData ? e.postData.contents : 'NO POST DATA'));
+    // Parse payload from form parameter (sent as x-www-form-urlencoded)
+    // Fallback to postData.contents for backward compatibility
+    let payloadStr;
+    if (e.parameter && e.parameter.payload) {
+      payloadStr = e.parameter.payload;
+    } else if (e.postData && e.postData.contents) {
+      payloadStr = e.postData.contents;
+    } else {
+      throw new Error('No payload received');
+    }
 
-    const payload = JSON.parse(e.postData.contents);
+    Logger.log('=== doPost DEBUG ===');
+    Logger.log('Payload string: ' + payloadStr);
+
+    const payload = JSON.parse(payloadStr);
     Logger.log('Parsed payload: ' + JSON.stringify(payload));
     Logger.log('Action: ' + payload.action);
     Logger.log('Data: ' + JSON.stringify(payload.data));

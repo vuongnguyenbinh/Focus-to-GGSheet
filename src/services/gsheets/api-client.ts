@@ -40,9 +40,9 @@ class GoogleSheetsClient {
   /**
    * Make HTTP request to Apps Script
    *
-   * CORS Note: Apps Script web apps don't handle OPTIONS preflight requests.
-   * To avoid preflight, we send POST body as text/plain instead of application/json.
-   * Apps Script will still parse the JSON from e.postData.contents.
+   * CORS Note: Apps Script doesn't handle OPTIONS preflight requests.
+   * Using application/x-www-form-urlencoded avoids preflight (simple request)
+   * and Apps Script properly parses the data into e.parameter.
    */
   private async request<T>(
     method: 'GET' | 'POST',
@@ -57,10 +57,12 @@ class GoogleSheetsClient {
 
     const options: RequestInit = { method }
     if (body) {
-      // Use text/plain to avoid CORS preflight (Apps Script doesn't handle OPTIONS)
-      // Apps Script will still receive the JSON in e.postData.contents
-      options.body = JSON.stringify(body)
-      options.headers = { 'Content-Type': 'text/plain;charset=utf-8' }
+      // Use form-urlencoded to avoid CORS preflight and ensure Apps Script receives data
+      // JSON payload is sent as 'payload' parameter, parsed by Apps Script from e.parameter
+      const formData = new URLSearchParams()
+      formData.set('payload', JSON.stringify(body))
+      options.body = formData.toString()
+      options.headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
     }
 
     console.log(`[SheetsClient] ${method} ${params.action || 'request'}`)
