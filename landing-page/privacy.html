@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Focus to GGSheet</title>
+  <meta name="description" content="Privacy Policy for Focus to GGSheet Chrome Extension. Learn how we protect your data.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Privacy Policy - Focus to GGSheet">
+  <meta property="og:description" content="Privacy Policy for Focus to GGSheet Chrome Extension">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://binhvuong.vn/focus-to-google-sheet/privacy">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="index.html" class="logo">
+          <img src="images/logo.png" alt="Focus to GGSheet" onerror="this.style.display='none'">
+          <span>Focus to GGSheet</span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+          <li><a href="features.html" data-i18n="nav.features">Features</a></li>
+          <li><a href="guide.html" data-i18n="nav.guide">Guide</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <div class="lang-toggle">
+            <button onclick="setLang('en')" id="langEn" class="active">EN</button>
+            <button onclick="setLang('vi')" id="langVi">VI</button>
+          </div>
+          <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </button>
+          <a href="https://chromewebstore.google.com/detail/focus-to-notion" class="btn btn-primary" target="_blank" data-i18n="nav.install">Install Free</a>
+          <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Privacy Policy Content -->
+  <section class="privacy-policy">
+    <div class="container">
+      <div class="content-wrapper">
+        <h1 data-i18n="privacy.title">Privacy Policy</h1>
+        <p class="last-updated" data-i18n="privacy.lastUpdated">Last updated: December 29, 2024</p>
+
+        <!-- English Version -->
+        <div id="privacy-en" class="privacy-content">
+          <h2>Overview</h2>
+          <p>Focus to GGSheet ("the Extension") is committed to protecting your privacy. This policy explains how we handle your data.</p>
+
+          <h2>Data Collection</h2>
+          <p>The Extension collects and stores the following data <strong>locally on your device</strong>:</p>
+          <ul>
+            <li><strong>Tasks:</strong> Title, priority level, deadline, completion status, timestamps</li>
+            <li><strong>Bookmarks:</strong> URL, page title, category, tags, timestamps</li>
+            <li><strong>Notes:</strong> Text content, timestamps</li>
+            <li><strong>AI Prompts:</strong> Prompt text, category, timestamps</li>
+            <li><strong>Settings:</strong> Theme preference, language, sync configuration URL</li>
+          </ul>
+
+          <h2>Data Storage</h2>
+          <p><strong>Primary Storage:</strong> All data is stored locally in your browser using IndexedDB. This means your data stays on your device and is accessible offline.</p>
+          <p><strong>Optional Sync:</strong> If you enable Google Sheets synchronization, your data will also be stored in YOUR own Google Sheets spreadsheet. You control this spreadsheet entirely.</p>
+
+          <h2>Data Transmission</h2>
+          <p>Data is only transmitted when you explicitly enable Google Sheets sync. When enabled:</p>
+          <ul>
+            <li>Data is sent directly to your own Google Apps Script endpoint</li>
+            <li>No data passes through our servers</li>
+            <li>You provide and control the sync URL</li>
+            <li>Sync occurs automatically every 5 minutes (when enabled)</li>
+          </ul>
+
+          <h2>Data Sharing</h2>
+          <p>We do <strong>NOT</strong>:</p>
+          <ul>
+            <li>Sell your data to third parties</li>
+            <li>Share your data with advertisers</li>
+            <li>Use your data for marketing purposes</li>
+            <li>Track your browsing activity</li>
+            <li>Collect analytics or usage statistics</li>
+          </ul>
+
+          <h2>Permissions Explained</h2>
+          <table class="permissions-table">
+            <thead>
+              <tr>
+                <th>Permission</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sidePanel</code></td>
+                <td>Display the extension's main interface as a browser sidebar</td>
+              </tr>
+              <tr>
+                <td><code>storage</code></td>
+                <td>Save your settings and preferences locally</td>
+              </tr>
+              <tr>
+                <td><code>alarms</code></td>
+                <td>Schedule automatic background sync with Google Sheets</td>
+              </tr>
+              <tr>
+                <td><code>activeTab</code></td>
+                <td>Capture current page URL/title when saving bookmarks (only when you click save)</td>
+              </tr>
+              <tr>
+                <td><code>script.google.com</code></td>
+                <td>Communicate with your Google Apps Script for Google Sheets sync</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Data Security</h2>
+          <ul>
+            <li>All local data is stored using browser's secure IndexedDB</li>
+            <li>Google Sheets sync uses HTTPS encryption</li>
+            <li>No passwords or sensitive credentials are stored</li>
+          </ul>
+
+          <h2>Your Rights</h2>
+          <ul>
+            <li><strong>Access:</strong> All your data is visible within the extension</li>
+            <li><strong>Delete:</strong> You can delete any or all data at any time</li>
+            <li><strong>Export:</strong> Export your data via Google Sheets sync</li>
+            <li><strong>Control:</strong> Enable or disable sync at any time</li>
+          </ul>
+
+          <h2>Children's Privacy</h2>
+          <p>The Extension does not knowingly collect data from children under 13. The Extension is designed for general productivity use by adults.</p>
+
+          <h2>Changes to This Policy</h2>
+          <p>We may update this privacy policy. Changes will be posted on this page with an updated revision date.</p>
+
+          <h2>Contact</h2>
+          <p>For questions about this privacy policy, contact us at:</p>
+          <ul>
+            <li>Email: <a href="mailto:contact@binhvuong.vn">contact@binhvuong.vn</a></li>
+            <li>Website: <a href="https://binhvuong.vn" target="_blank">binhvuong.vn</a></li>
+          </ul>
+        </div>
+
+        <!-- Vietnamese Version -->
+        <div id="privacy-vi" class="privacy-content" style="display: none;">
+          <h2>Tổng quan</h2>
+          <p>Focus to GGSheet ("Extension") cam kết bảo vệ quyền riêng tư của bạn. Chính sách này giải thích cách chúng tôi xử lý dữ liệu của bạn.</p>
+
+          <h2>Thu thập dữ liệu</h2>
+          <p>Extension thu thập và lưu trữ dữ liệu sau <strong>cục bộ trên thiết bị của bạn</strong>:</p>
+          <ul>
+            <li><strong>Công việc:</strong> Tiêu đề, độ ưu tiên, hạn chót, trạng thái hoàn thành, thời gian</li>
+            <li><strong>Dấu trang:</strong> URL, tiêu đề trang, danh mục, nhãn, thời gian</li>
+            <li><strong>Ghi chú:</strong> Nội dung văn bản, thời gian</li>
+            <li><strong>Prompts AI:</strong> Văn bản prompt, danh mục, thời gian</li>
+            <li><strong>Cài đặt:</strong> Giao diện, ngôn ngữ, URL đồng bộ</li>
+          </ul>
+
+          <h2>Lưu trữ dữ liệu</h2>
+          <p><strong>Lưu trữ chính:</strong> Tất cả dữ liệu được lưu cục bộ trong trình duyệt sử dụng IndexedDB. Điều này có nghĩa dữ liệu của bạn ở trên thiết bị và có thể truy cập offline.</p>
+          <p><strong>Đồng bộ tùy chọn:</strong> Nếu bạn bật đồng bộ Google Sheets, dữ liệu của bạn cũng sẽ được lưu trong bảng tính Google Sheets CỦA BẠN. Bạn hoàn toàn kiểm soát bảng tính này.</p>
+
+          <h2>Truyền tải dữ liệu</h2>
+          <p>Dữ liệu chỉ được truyền khi bạn chủ động bật đồng bộ Google Sheets. Khi bật:</p>
+          <ul>
+            <li>Dữ liệu được gửi trực tiếp đến Google Apps Script của bạn</li>
+            <li>Không có dữ liệu nào đi qua máy chủ của chúng tôi</li>
+            <li>Bạn cung cấp và kiểm soát URL đồng bộ</li>
+            <li>Đồng bộ tự động mỗi 5 phút (khi bật)</li>
+          </ul>
+
+          <h2>Chia sẻ dữ liệu</h2>
+          <p>Chúng tôi <strong>KHÔNG</strong>:</p>
+          <ul>
+            <li>Bán dữ liệu của bạn cho bên thứ ba</li>
+            <li>Chia sẻ dữ liệu với nhà quảng cáo</li>
+            <li>Sử dụng dữ liệu cho mục đích marketing</li>
+            <li>Theo dõi hoạt động duyệt web của bạn</li>
+            <li>Thu thập phân tích hoặc thống kê sử dụng</li>
+          </ul>
+
+          <h2>Giải thích quyền</h2>
+          <table class="permissions-table">
+            <thead>
+              <tr>
+                <th>Quyền</th>
+                <th>Mục đích</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>sidePanel</code></td>
+                <td>Hiển thị giao diện chính của extension như sidebar trình duyệt</td>
+              </tr>
+              <tr>
+                <td><code>storage</code></td>
+                <td>Lưu cài đặt và tùy chọn của bạn cục bộ</td>
+              </tr>
+              <tr>
+                <td><code>alarms</code></td>
+                <td>Lên lịch đồng bộ tự động với Google Sheets</td>
+              </tr>
+              <tr>
+                <td><code>activeTab</code></td>
+                <td>Lấy URL/tiêu đề trang hiện tại khi lưu dấu trang (chỉ khi bạn click lưu)</td>
+              </tr>
+              <tr>
+                <td><code>script.google.com</code></td>
+                <td>Giao tiếp với Google Apps Script để đồng bộ Google Sheets</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Bảo mật dữ liệu</h2>
+          <ul>
+            <li>Tất cả dữ liệu cục bộ được lưu trữ sử dụng IndexedDB bảo mật của trình duyệt</li>
+            <li>Đồng bộ Google Sheets sử dụng mã hóa HTTPS</li>
+            <li>Không lưu trữ mật khẩu hoặc thông tin xác thực nhạy cảm</li>
+          </ul>
+
+          <h2>Quyền của bạn</h2>
+          <ul>
+            <li><strong>Truy cập:</strong> Tất cả dữ liệu của bạn hiển thị trong extension</li>
+            <li><strong>Xóa:</strong> Bạn có thể xóa bất kỳ hoặc tất cả dữ liệu bất cứ lúc nào</li>
+            <li><strong>Xuất:</strong> Xuất dữ liệu qua đồng bộ Google Sheets</li>
+            <li><strong>Kiểm soát:</strong> Bật hoặc tắt đồng bộ bất cứ lúc nào</li>
+          </ul>
+
+          <h2>Quyền riêng tư trẻ em</h2>
+          <p>Extension không cố ý thu thập dữ liệu từ trẻ em dưới 13 tuổi. Extension được thiết kế cho người lớn sử dụng năng suất chung.</p>
+
+          <h2>Thay đổi chính sách</h2>
+          <p>Chúng tôi có thể cập nhật chính sách bảo mật này. Các thay đổi sẽ được đăng trên trang này với ngày sửa đổi cập nhật.</p>
+
+          <h2>Liên hệ</h2>
+          <p>Nếu có câu hỏi về chính sách bảo mật này, liên hệ chúng tôi tại:</p>
+          <ul>
+            <li>Email: <a href="mailto:contact@binhvuong.vn">contact@binhvuong.vn</a></li>
+            <li>Website: <a href="https://binhvuong.vn" target="_blank">binhvuong.vn</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2024 Focus to GGSheet. <span data-i18n="footer.credit">Made by</span> <a href="https://binhvuong.vn" target="_blank">Binh Vuong AI Marketing</a></p>
+        <ul class="footer-links">
+          <li><a href="https://github.com/vuongnguyenbinh/Focus-to-GGSheet" target="_blank">GitHub</a></li>
+          <li><a href="mailto:contact@binhvuong.vn" data-i18n="footer.contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script>
+    // Toggle privacy content based on language
+    function updatePrivacyContent() {
+      const lang = localStorage.getItem('lang') || 'en';
+      const enContent = document.getElementById('privacy-en');
+      const viContent = document.getElementById('privacy-vi');
+
+      if (lang === 'vi') {
+        enContent.style.display = 'none';
+        viContent.style.display = 'block';
+      } else {
+        enContent.style.display = 'block';
+        viContent.style.display = 'none';
+      }
+    }
+
+    // Override setLang to also update privacy content
+    const originalSetLang = window.setLang;
+    window.setLang = function(lang) {
+      if (originalSetLang) originalSetLang(lang);
+      localStorage.setItem('lang', lang);
+      updatePrivacyContent();
+    };
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', updatePrivacyContent);
+  </script>
+  <script src="js/i18n.js"></script>
+
+  <style>
+    .privacy-policy {
+      padding: 120px 0 60px;
+      min-height: calc(100vh - 200px);
+    }
+
+    .privacy-policy .content-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .privacy-policy h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .privacy-policy .last-updated {
+      color: var(--gray-500);
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+
+    .privacy-content h2 {
+      font-size: 1.4rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .privacy-content p,
+    .privacy-content li {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+
+    .privacy-content ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .privacy-content strong {
+      color: var(--text-primary);
+    }
+
+    .permissions-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .permissions-table th,
+    .permissions-table td {
+      border: 1px solid var(--gray-200);
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+    .permissions-table th {
+      background: var(--gray-100);
+      font-weight: 600;
+    }
+
+    .permissions-table code {
+      background: var(--gray-100);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    .privacy-content a {
+      color: var(--brand);
+    }
+
+    .privacy-content a:hover {
+      text-decoration: underline;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .permissions-table th {
+        background: var(--gray-800);
+      }
+
+      .permissions-table th,
+      .permissions-table td {
+        border-color: var(--gray-700);
+      }
+
+      .permissions-table code {
+        background: var(--gray-800);
+      }
+    }
+
+    [data-theme="dark"] .permissions-table th {
+      background: var(--gray-800);
+    }
+
+    [data-theme="dark"] .permissions-table th,
+    [data-theme="dark"] .permissions-table td {
+      border-color: var(--gray-700);
+    }
+
+    [data-theme="dark"] .permissions-table code {
+      background: var(--gray-800);
+    }
+  </style>
+</body>
+</html>

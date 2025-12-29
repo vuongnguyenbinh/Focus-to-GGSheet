@@ -55,6 +55,11 @@ const translations = {
     // Footer
     'footer.credit': 'Made by',
     'footer.contact': 'Contact',
+    'footer.privacy': 'Privacy',
+
+    // Privacy Page
+    'privacy.title': 'Privacy Policy',
+    'privacy.lastUpdated': 'Last updated: December 29, 2024',
 
     // Features Page
     'featuresPage.title': 'All Features',
@@ -203,6 +208,11 @@ const translations = {
     // Footer
     'footer.credit': 'Tạo bởi',
     'footer.contact': 'Liên hệ',
+    'footer.privacy': 'Bảo mật',
+
+    // Privacy Page
+    'privacy.title': 'Chính Sách Bảo Mật',
+    'privacy.lastUpdated': 'Cập nhật lần cuối: 29 tháng 12, 2024',
 
     // Features Page
     'featuresPage.title': 'Tất Cả Tính Năng',
