@@ -7,7 +7,7 @@ const AUTHOR_INFO = {
   website: 'https://binhvuong.vn',
   email: 'contact@binhvuong.vn',
   facebook: 'https://www.facebook.com/vuongnguyenbinh88/',
-  userGuide: 'https://binhvuong.vn/focus-to-notion',
+  userGuide: 'https://binhvuong.vn/focus-to-google-sheet',
 }
 
 const BANK_INFO = {
