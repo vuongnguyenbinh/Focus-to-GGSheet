@@ -10,7 +10,7 @@
     "activeTab"
   ],
   "host_permissions": [
-    "https://api.notion.com/*"
+    "https://script.google.com/*"
   ],
   "side_panel": {
     "default_path": "src/sidepanel/index.html"

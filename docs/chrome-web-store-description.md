@@ -111,3 +111,52 @@ Productivity
 - sidebar
 - todo list
 - AI prompts
+
+---
+
+## Chrome Web Store Privacy Practices
+
+### Single Purpose Description (required)
+Focus to GGSheet helps users stay productive while browsing by providing a sidebar for managing tasks, bookmarks, notes, and AI prompts with optional Google Sheets synchronization.
+
+### Permission Justifications
+
+**sidePanel**
+Required to display the extension's main interface as a browser sidebar. Users access all features (tasks, bookmarks, notes, prompts) through this sidebar panel which remains visible while browsing.
+
+**storage**
+Required to save user settings and preferences (theme, language, sync configuration). Settings persist across browser sessions using Chrome's local storage API.
+
+**alarms**
+Required for automatic background sync with Google Sheets. The extension syncs user data every 5 minutes when sync is enabled, ensuring data backup without manual intervention.
+
+**activeTab**
+Required to capture the current page's URL and title when users save bookmarks. This permission activates only when users click "Save Bookmark" and accesses only the active tab's metadata.
+
+**Host Permission: https://script.google.com/***
+Required to communicate with Google Apps Script for two-way Google Sheets synchronization. Users provide their own Apps Script URL; the extension sends/receives task, bookmark, note, and prompt data to their personal spreadsheet.
+
+### Remote Code
+This extension does not use remotely hosted code. All functionality is bundled within the extension package.
+
+### Data Use Disclosure
+
+**What data is collected:**
+- Tasks (title, priority, deadline, completion status)
+- Bookmarks (URL, title, category, tags)
+- Notes (text content, timestamps)
+- AI Prompts (prompt text, category)
+- User settings (theme preference, language, sync URL)
+
+**How data is used:**
+All data is used solely for the extension's stated functionality. No data is sold, shared with third parties, or used for advertising.
+
+**Data storage:**
+- Primary: Browser's IndexedDB (local, offline-first)
+- Optional: User's own Google Sheets (user-controlled sync)
+
+**Data transmission:**
+Data only transmitted when user explicitly enables Google Sheets sync. Transmission goes directly to user's own Google Apps Script endpoint - no intermediate servers.
+
+### Privacy Policy URL
+https://binhvuong.vn/focus-to-google-sheet/privacy
