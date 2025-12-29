@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus to GGSheet - Productivity Sidebar for Chrome</title>
+  <meta name="description" content="Manage tasks, bookmarks, and notes with Google Sheets sync. Offline-first sidebar keeps you productive while browsing.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Focus to GGSheet - Productivity Sidebar for Chrome">
+  <meta property="og:description" content="Manage tasks, bookmarks, and notes with Google Sheets sync. Offline-first sidebar keeps you productive while browsing.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://binhvuong.vn/focus-to-notion">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="index.html" class="logo">
+          <img src="images/logo.png" alt="Focus to GGSheet" onerror="this.style.display='none'">
+          <span>Focus to GGSheet</span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+          <li><a href="features.html" data-i18n="nav.features">Features</a></li>
+          <li><a href="guide.html" data-i18n="nav.guide">Guide</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <div class="lang-toggle">
+            <button onclick="setLang('en')" id="langEn" class="active">EN</button>
+            <button onclick="setLang('vi')" id="langVi">VI</button>
+          </div>
+          <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </button>
+          <a href="https://chromewebstore.google.com/detail/focus-to-notion" class="btn btn-primary" target="_blank" data-i18n="nav.install">Install Free</a>
+          <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <span class="hero-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+        <span data-i18n="hero.badge">Free Chrome Extension</span>
+      </span>
+
+      <h1>
+        <span data-i18n="hero.title1">Stop Juggling Browser Tabs.</span><br>
+        <span class="text-gradient" data-i18n="hero.title2">Start Getting Things Done.</span>
+      </h1>
+
+      <p class="hero-description" data-i18n="hero.description">
+        Manage tasks, save bookmarks, and capture ideas without leaving your current page. Everything syncs with Google Sheets while working offline-first.
+      </p>
+
+      <div class="hero-actions">
+        <a href="https://chromewebstore.google.com/detail/focus-to-notion" class="btn btn-primary btn-lg" target="_blank">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M21.17 8a10 10 0 00-18.34 0"/>
+          </svg>
+          <span data-i18n="hero.cta1">Add to Chrome - Free</span>
+        </a>
+        <a href="guide.html" class="btn btn-secondary btn-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/>
+          </svg>
+          <span data-i18n="hero.cta2">How It Works</span>
+        </a>
+      </div>
+
+      <div class="hero-image">
+        <img src="images/hero-screenshot.png" alt="Focus to GGSheet Screenshot" onerror="this.parentElement.innerHTML='<div style=\'padding:100px;background:var(--gray-100);text-align:center;color:var(--gray-400)\'>Screenshot Preview</div>'">
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-i18n="features.title">Everything You Need to Stay Focused</h2>
+        <p data-i18n="features.subtitle">A powerful sidebar that lives in your browser. Capture, organize, and sync - all in one place.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Task Management -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.tasks.title">Task Management</h3>
+          <p data-i18n="features.tasks.desc">Track tasks with priority levels (High/Medium/Low) and deadlines. One-click completion marking.</p>
+        </div>
+
+        <!-- Smart Bookmarks -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.bookmarks.title">Smart Bookmarks</h3>
+          <p data-i18n="features.bookmarks.desc">Save pages with categories and tags. Drag-drop URLs for quick capture with auto-fetched metadata.</p>
+        </div>
+
+        <!-- Quick Notes -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.notes.title">Quick Notes</h3>
+          <p data-i18n="features.notes.desc">Capture thoughts instantly with markdown support. Never lose a brilliant idea again.</p>
+        </div>
+
+        <!-- AI Prompts Library -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.prompts.title">AI Prompts Library</h3>
+          <p data-i18n="features.prompts.desc">Store and organize AI prompts for ChatGPT, Claude. Sync to Google Sheets for team sharing.</p>
+        </div>
+
+        <!-- Google Sheets Sync -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 4v6h-6M1 20v-6h6"/>
+              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.sync.title">Two-Way Google Sheets Sync</h3>
+          <p data-i18n="features.sync.desc">Changes in the extension update Google Sheets, and vice versa. Auto-syncs every 5 minutes.</p>
+        </div>
+
+        <!-- Offline First -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+              <path d="M22 4L12 14.01l-3-3"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.offline.title">Offline-First</h3>
+          <p data-i18n="features.offline.desc">All data stored locally in IndexedDB. Works without internet, syncs when connected.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases Section -->
+  <section class="use-cases">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-i18n="usecases.title">Perfect For</h2>
+        <p data-i18n="usecases.subtitle">Whether you're researching, creating, or managing projects - Focus to GGSheet adapts to your workflow.</p>
+      </div>
+
+      <div class="use-case-grid">
+        <div class="use-case-card">
+          <h4 data-i18n="usecases.research.title">Research & Learning</h4>
+          <p data-i18n="usecases.research.desc">Save articles, take notes, and track follow-up tasks while reading documentation.</p>
+        </div>
+
+        <div class="use-case-card">
+          <h4 data-i18n="usecases.content.title">Content Creation</h4>
+          <p data-i18n="usecases.content.desc">Bookmark references, draft ideas in notes, and manage deadlines for writing projects.</p>
+        </div>
+
+        <div class="use-case-card">
+          <h4 data-i18n="usecases.project.title">Project Management</h4>
+          <p data-i18n="usecases.project.desc">Track action items from meetings, organize resources by tags, sync with Google Sheets databases.</p>
+        </div>
+
+        <div class="use-case-card">
+          <h4 data-i18n="usecases.ai.title">AI Workflow</h4>
+          <p data-i18n="usecases.ai.desc">Build a personal prompt library for ChatGPT, Claude, or other AI tools.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <h2 data-i18n="cta.title">Ready to Boost Your Productivity?</h2>
+      <p data-i18n="cta.subtitle">Join thousands of users who stay organized while browsing. Free forever, no account required.</p>
+      <a href="https://chromewebstore.google.com/detail/focus-to-notion" class="btn btn-primary btn-lg" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+        <span data-i18n="cta.button">Install Now - It's Free</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2024 Focus to GGSheet. <span data-i18n="footer.credit">Made by</span> <a href="https://binhvuong.vn" target="_blank">Binh Vuong AI Marketing</a></p>
+        <ul class="footer-links">
+          <li><a href="https://github.com/vuongnguyenbinh/Google SheetsEX" target="_blank">GitHub</a></li>
+          <li><a href="mailto:contact@binhvuong.vn" data-i18n="footer.contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/i18n.js"></script>
+</body>
+</html>

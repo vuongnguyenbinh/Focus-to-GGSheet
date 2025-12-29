@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Features - Focus to GGSheet</title>
+  <meta name="description" content="Discover all features of Focus to GGSheet: task management, smart bookmarks, quick notes, AI prompts library, and two-way Google Sheets sync.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="index.html" class="logo">
+          <img src="images/logo.png" alt="Focus to GGSheet" onerror="this.style.display='none'">
+          <span>Focus to GGSheet</span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+          <li><a href="features.html" data-i18n="nav.features">Features</a></li>
+          <li><a href="guide.html" data-i18n="nav.guide">Guide</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <div class="lang-toggle">
+            <button onclick="setLang('en')" id="langEn" class="active">EN</button>
+            <button onclick="setLang('vi')" id="langVi">VI</button>
+          </div>
+          <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </button>
+          <a href="https://chromewebstore.google.com/detail/focus-to-notion" class="btn btn-primary" target="_blank" data-i18n="nav.install">Install Free</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Features Page Content -->
+  <section class="features-page">
+    <div class="container">
+      <div class="section-header">
+        <h1 data-i18n="featuresPage.title">All Features</h1>
+        <p data-i18n="featuresPage.subtitle">Everything you need to stay productive while browsing. No feature bloat, just what matters.</p>
+      </div>
+
+      <!-- Task Management -->
+      <div class="feature-detail">
+        <div class="feature-detail-content">
+          <h3 data-i18n="featuresPage.tasks.title">Task Management</h3>
+          <p data-i18n="featuresPage.tasks.desc">Stay on top of your work with a simple yet powerful task system.</p>
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.tasks.f1">Priority levels: High, Medium, Low with visual indicators</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.tasks.f2">Deadline tracking with overdue notifications</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.tasks.f3">One-click completion marking</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.tasks.f4">Categories and tags for organization</span>
+            </li>
+          </ul>
+        </div>
+        <div class="feature-detail-image">
+          <img src="images/feature-tasks.png" alt="Task Management" onerror="this.parentElement.innerHTML='<div style=\'padding:80px;background:var(--gray-100);text-align:center;color:var(--gray-400)\'>Task Management Screenshot</div>'">
+        </div>
+      </div>
+
+      <!-- Smart Bookmarks -->
+      <div class="feature-detail">
+        <div class="feature-detail-content">
+          <h3 data-i18n="featuresPage.bookmarks.title">Smart Bookmarks</h3>
+          <p data-i18n="featuresPage.bookmarks.desc">Save and organize web pages with intelligent metadata capture.</p>
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.bookmarks.f1">Drag-drop URLs for instant capture</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.bookmarks.f2">Auto-fetch page title and favicon</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.bookmarks.f3">Category-based grouping with expand/collapse</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.bookmarks.f4">Search across all bookmarks instantly</span>
+            </li>
+          </ul>
+        </div>
+        <div class="feature-detail-image">
+          <img src="images/feature-bookmarks.png" alt="Smart Bookmarks" onerror="this.parentElement.innerHTML='<div style=\'padding:80px;background:var(--gray-100);text-align:center;color:var(--gray-400)\'>Bookmarks Screenshot</div>'">
+        </div>
+      </div>
+
+      <!-- Quick Notes -->
+      <div class="feature-detail">
+        <div class="feature-detail-content">
+          <h3 data-i18n="featuresPage.notes.title">Quick Notes</h3>
+          <p data-i18n="featuresPage.notes.desc">Capture ideas the moment they appear. No friction, just instant notes.</p>
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.notes.f1">Lightning-fast note creation</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.notes.f2">Markdown support for formatting</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.notes.f3">Full-text search across all notes</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.notes.f4">Sync to Google Sheets as rich text</span>
+            </li>
+          </ul>
+        </div>
+        <div class="feature-detail-image">
+          <img src="images/feature-notes.png" alt="Quick Notes" onerror="this.parentElement.innerHTML='<div style=\'padding:80px;background:var(--gray-100);text-align:center;color:var(--gray-400)\'>Notes Screenshot</div>'">
+        </div>
+      </div>
+
+      <!-- AI Prompts Library -->
+      <div class="feature-detail">
+        <div class="feature-detail-content">
+          <h3 data-i18n="featuresPage.prompts.title">AI Prompts Library</h3>
+          <p data-i18n="featuresPage.prompts.desc">Build your personal prompt engineering library for AI tools.</p>
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.prompts.f1">Store prompts for ChatGPT, Claude, etc.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.prompts.f2">Organize by category and tags</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.prompts.f3">One-click copy to clipboard</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.prompts.f4">Sync with Google Sheets for team sharing</span>
+            </li>
+          </ul>
+        </div>
+        <div class="feature-detail-image">
+          <img src="images/feature-prompts.png" alt="AI Prompts Library" onerror="this.parentElement.innerHTML='<div style=\'padding:80px;background:var(--gray-100);text-align:center;color:var(--gray-400)\'>Prompts Screenshot</div>'">
+        </div>
+      </div>
+
+      <!-- Google Sheets Sync -->
+      <div class="feature-detail">
+        <div class="feature-detail-content">
+          <h3 data-i18n="featuresPage.sync.title">Two-Way Google Sheets Sync</h3>
+          <p data-i18n="featuresPage.sync.desc">Real bidirectional sync - not just export. Your data stays consistent everywhere.</p>
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.sync.f1">Changes sync both ways automatically</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.sync.f2">Auto-sync every 5 minutes or manual trigger</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.sync.f3">Conflict resolution built-in</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.sync.f4">Works with existing Google Sheets databases</span>
+            </li>
+          </ul>
+        </div>
+        <div class="feature-detail-image">
+          <img src="images/feature-sync.png" alt="Google Sheets Sync" onerror="this.parentElement.innerHTML='<div style=\'padding:80px;background:var(--gray-100);text-align:center;color:var(--gray-400)\'>Sync Screenshot</div>'">
+        </div>
+      </div>
+
+      <!-- Offline First -->
+      <div class="feature-detail">
+        <div class="feature-detail-content">
+          <h3 data-i18n="featuresPage.offline.title">Offline-First Architecture</h3>
+          <p data-i18n="featuresPage.offline.desc">Your data is always available, even without internet connection.</p>
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.offline.f1">All data stored locally in IndexedDB</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.offline.f2">Works on planes, trains, anywhere</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.offline.f3">Auto-syncs when connection restored</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              <span data-i18n="featuresPage.offline.f4">Zero data loss guarantee</span>
+            </li>
+          </ul>
+        </div>
+        <div class="feature-detail-image">
+          <img src="images/feature-offline.png" alt="Offline First" onerror="this.parentElement.innerHTML='<div style=\'padding:80px;background:var(--gray-100);text-align:center;color:var(--gray-400)\'>Offline Screenshot</div>'">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <h2 data-i18n="cta.title">Ready to Boost Your Productivity?</h2>
+      <p data-i18n="cta.subtitle">Join thousands of users who stay organized while browsing. Free forever, no account required.</p>
+      <a href="https://chromewebstore.google.com/detail/focus-to-notion" class="btn btn-primary btn-lg" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+        <span data-i18n="cta.button">Install Now - It's Free</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2024 Focus to GGSheet. <span data-i18n="footer.credit">Made by</span> <a href="https://binhvuong.vn" target="_blank">Binh Vuong AI Marketing</a></p>
+        <ul class="footer-links">
+          <li><a href="https://github.com/vuongnguyenbinh/Google SheetsEX" target="_blank">GitHub</a></li>
+          <li><a href="mailto:contact@binhvuong.vn" data-i18n="footer.contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/i18n.js"></script>
+</body>
+</html>

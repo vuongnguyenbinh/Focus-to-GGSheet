@@ -1,5 +1,5 @@
 /**
- * i18n configuration for Focus to Notion extension
+ * i18n configuration for Focus to GGSheet extension
  * Supports English (default) and Vietnamese with chrome.storage persistence
  */
 import i18n from 'i18next'

@@ -50,7 +50,7 @@ export function RequestTab({ onClose }: RequestTabProps) {
         email: form.email.trim(),
         phone: form.phone.trim() || undefined,
         message: form.message.trim(),
-        source: 'NotionEX Extension',
+        source: 'GGSheet Extension',
         timestamp: new Date().toISOString(),
       }
 

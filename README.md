@@ -1,15 +1,15 @@
-# Focus to Notion - Chrome Extension
+# Focus to GGSheet - Chrome Extension
 
-Stay focused while browsing and save everything to Notion.
+Stay focused while browsing and save everything to Google Sheets.
 
-> Tiện ích mở rộng Chrome giúp bạn tập trung làm việc trên trình duyệt và lưu trữ mọi thứ vào Notion.
+> Tiện ích mở rộng Chrome giúp bạn tập trung làm việc trên trình duyệt và lưu trữ mọi thứ vào Google Sheets.
 
 ## Tính năng
 
 - **Công việc (Tasks)**: Quản lý việc cần làm với độ ưu tiên và hạn chót
 - **Dấu trang (Bookmarks)**: Lưu trang web yêu thích
 - **Ghi chú (Notes)**: Ghi chú nhanh mọi lúc
-- **Đồng bộ Notion**: Tự động đồng bộ 2 chiều với Notion database
+- **Đồng bộ Google Sheets**: Tự động đồng bộ 2 chiều với Google Sheets database
 - **Hoạt động offline**: Dữ liệu lưu local, đồng bộ khi có mạng
 - **Giao diện sáng/tối**: Tùy chỉnh theo sở thích
 
@@ -21,7 +21,7 @@ Stay focused while browsing and save everything to Notion.
 
 ```bash
 # Clone hoặc tải source code
-cd NotionEX
+cd Google SheetsEX
 
 # Cài đặt dependencies
 npm install
@@ -44,7 +44,7 @@ Sau khi build xong, thư mục `dist/` sẽ chứa extension.
 ### Bước 3: Mở Sidebar
 
 - **Cách 1**: Click vào icon extension trên toolbar
-- **Cách 2**: Click chuột phải vào trang web → "Open Focus to Notion"
+- **Cách 2**: Click chuột phải vào trang web → "Open Focus to GGSheet"
 
 ---
 
@@ -96,20 +96,20 @@ Sau khi build xong, thư mục `dist/` sẽ chứa extension.
 
 ---
 
-## Hướng dẫn kết nối Notion
+## Hướng dẫn kết nối Google Sheets
 
-### Bước 1: Tạo Notion Integration
+### Bước 1: Tạo Google Sheets Integration
 
 1. Truy cập: https://www.notion.so/my-integrations
 2. Click **+ New integration**
-3. Đặt tên: "Focus to Notion"
+3. Đặt tên: "Focus to GGSheet"
 4. Chọn workspace bạn muốn dùng
 5. Click **Submit**
 6. Sao chép **Internal Integration Token** (bắt đầu bằng `secret_`)
 
-### Bước 2: Tạo Database trong Notion
+### Bước 2: Tạo Database trong Google Sheets
 
-1. Tạo một trang mới trong Notion
+1. Tạo một trang mới trong Google Sheets
 2. Gõ `/database` và chọn **Database - Full page**
 3. Thêm các cột (properties) sau:
 
@@ -129,7 +129,7 @@ Sau khi build xong, thư mục `dist/` sẽ chứa extension.
 
 1. Mở database vừa tạo
 2. Click **⋯** (góc trên phải) → **Connections**
-3. Tìm và chọn integration "Focus to Notion"
+3. Tìm và chọn integration "Focus to GGSheet"
 4. Xác nhận chia sẻ
 
 ### Bước 4: Lấy Database ID
@@ -164,9 +164,9 @@ Sau khi build xong, thư mục `dist/` sẽ chứa extension.
 ## Câu hỏi thường gặp
 
 ### Q: Dữ liệu có mất khi xóa extension không?
-**A**: Không. Dữ liệu lưu trong IndexedDB của Chrome. Tuy nhiên, nếu xóa dữ liệu trình duyệt thì sẽ mất. Nên kết nối Notion để backup.
+**A**: Không. Dữ liệu lưu trong IndexedDB của Chrome. Tuy nhiên, nếu xóa dữ liệu trình duyệt thì sẽ mất. Nên kết nối Google Sheets để backup.
 
-### Q: Tại sao kết nối Notion thất bại?
+### Q: Tại sao kết nối Google Sheets thất bại?
 **A**: Kiểm tra:
 - Token đúng và chưa hết hạn
 - Database ID đúng định dạng
@@ -175,7 +175,7 @@ Sau khi build xong, thư mục `dist/` sẽ chứa extension.
 ### Q: Đồng bộ bị lỗi liên tục?
 **A**: Extension sẽ retry 3 lần. Nếu vẫn lỗi, kiểm tra:
 - Kết nối mạng
-- Notion API rate limit (max 3 request/giây)
+- Google Sheets API rate limit (max 3 request/giây)
 - Cấu trúc database đúng
 
 ### Q: Làm sao biết đang đồng bộ?
@@ -202,7 +202,7 @@ npx tsc --noEmit
 - Vite + CRXJS (Chrome Extension bundler)
 - Tailwind CSS
 - Dexie.js (IndexedDB wrapper)
-- Notion API
+- Google Sheets API
 
 ---
 

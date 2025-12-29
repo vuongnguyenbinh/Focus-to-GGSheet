@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "Focus to Notion",
-    "description": "Tập trung làm việc trên trình duyệt và lưu trữ mọi thứ vào Notion"
+    "name": "Focus to GGSheet",
+    "description": "Tập trung làm việc trên trình duyệt và lưu trữ mọi thứ vào Google Sheets"
   },
   "header": {
     "sync": "Đồng bộ",
@@ -34,7 +34,7 @@
     "greeting": "Xin chào! Tôi là {{name}}",
     "about": "Tôi là một marketer đam mê việc ứng dụng AI để hệ thống hóa cách thức quản lý và triển khai marketing cho doanh nghiệp.",
     "extensionIdea": "Ý tưởng Extension",
-    "extensionStory": "Extension này ban đầu là công cụ được phát triển để team nội bộ và đối tác của tôi có thể làm việc hiệu quả - với khả năng đồng bộ Notion một cách mượt mà, quản lý công việc như một chuyên gia, ghi chú nhanh như chớp, bookmark mọi thứ quan trọng và tương tác hiệu quả với AI thông qua thư viện prompts một cách thông minh!",
+    "extensionStory": "Extension này ban đầu là công cụ được phát triển để team nội bộ và đối tác của tôi có thể làm việc hiệu quả - với khả năng đồng bộ Google Sheets một cách mượt mà, quản lý công việc như một chuyên gia, ghi chú nhanh như chớp, bookmark mọi thứ quan trọng và tương tác hiệu quả với AI thông qua thư viện prompts một cách thông minh!",
     "andThen": "...Và sau đó",
     "shareStory": "Sau những phản hồi cực kỳ tích cực từ team và đối tác, tôi quyết định mang \"bí kíp\" này ra chia sẻ với cộng đồng!",
     "mission": "Mong muốn của tôi",
@@ -323,7 +323,7 @@
     "demoOptional": "Demo (tùy chọn)",
     "textDemo": "Text Demo",
     "textDemoPlaceholder": "Kết quả mẫu từ prompt...",
-    "fileDemo": "File Demo (từ Notion)",
+    "fileDemo": "File Demo",
     "viewFile": "Xem file"
   },
   "promptList": {

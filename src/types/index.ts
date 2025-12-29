@@ -195,6 +195,6 @@ export interface FeatureRequestPayload {
   email: string
   phone?: string
   message: string
-  source: 'NotionEX Extension'
+  source: 'GGSheet Extension'
   timestamp: string
 }

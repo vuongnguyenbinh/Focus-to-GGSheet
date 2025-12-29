@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "Focus to Notion",
-    "description": "Stay focused while browsing and save everything to Notion"
+    "name": "Focus to GGSheet",
+    "description": "Stay focused while browsing and save everything to Google Sheets"
   },
   "header": {
     "sync": "Sync",
@@ -34,7 +34,7 @@
     "greeting": "Hello! I'm {{name}}",
     "about": "I'm a marketer passionate about applying AI to systematize management and marketing implementation for businesses.",
     "extensionIdea": "Extension Idea",
-    "extensionStory": "This extension was originally developed for my internal team and partners to work efficiently - with seamless Notion sync, professional task management, lightning-fast notes, bookmark everything important, and interact effectively with AI through a smart prompts library!",
+    "extensionStory": "This extension was originally developed for my internal team and partners to work efficiently - with seamless Google Sheets sync, professional task management, lightning-fast notes, bookmark everything important, and interact effectively with AI through a smart prompts library!",
     "andThen": "And then",
     "shareStory": "After extremely positive feedback from the team and partners, I decided to share this \"secret\" with the community!",
     "mission": "My Mission",
@@ -323,7 +323,7 @@
     "demoOptional": "Demo (optional)",
     "textDemo": "Text Demo",
     "textDemoPlaceholder": "Sample result from prompt...",
-    "fileDemo": "File Demo (from Notion)",
+    "fileDemo": "File Demo",
     "viewFile": "View file"
   },
   "promptList": {

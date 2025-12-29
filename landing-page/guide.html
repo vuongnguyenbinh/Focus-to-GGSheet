@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setup Guide - Focus to GGSheet</title>
+  <meta name="description" content="Learn how to install Focus to GGSheet and connect it with your Google Sheets workspace. Step-by-step guide with screenshots.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="index.html" class="logo">
+          <img src="images/logo.png" alt="Focus to GGSheet" onerror="this.style.display='none'">
+          <span>Focus to GGSheet</span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+          <li><a href="features.html" data-i18n="nav.features">Features</a></li>
+          <li><a href="guide.html" data-i18n="nav.guide">Guide</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <div class="lang-toggle">
+            <button onclick="setLang('en')" id="langEn" class="active">EN</button>
+            <button onclick="setLang('vi')" id="langVi">VI</button>
+          </div>
+          <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </button>
+          <a href="https://chromewebstore.google.com/detail/focus-to-notion" class="btn btn-primary" target="_blank" data-i18n="nav.install">Install Free</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Guide Content -->
+  <section class="guide-content">
+    <div class="container">
+      <div class="section-header">
+        <h1 data-i18n="guide.title">Setup Guide</h1>
+        <p data-i18n="guide.subtitle">Get started with Focus to GGSheet in just a few minutes. Follow these simple steps.</p>
+      </div>
+
+      <!-- Part 1: Installation -->
+      <div class="guide-section">
+        <h2 data-i18n="guide.install.title">1. Install the Extension</h2>
+
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.install.step1.title">Visit Chrome Web Store</h4>
+            <p data-i18n="guide.install.step1.desc">Click the button below to open Focus to GGSheet on Chrome Web Store.</p>
+            <a href="https://chromewebstore.google.com/detail/focus-to-notion" class="btn btn-primary mt-4" target="_blank">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="12" r="4"/>
+              </svg>
+              Open Chrome Web Store
+            </a>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.install.step2.title">Add to Chrome</h4>
+            <p data-i18n="guide.install.step2.desc">Click "Add to Chrome" button and accept the permissions. The extension needs these permissions to work:</p>
+            <ul style="margin-top: 1rem; margin-left: 1rem; color: var(--gray-600);">
+              <li><strong>sidePanel</strong>: Display the sidebar interface</li>
+              <li><strong>storage</strong>: Save your data locally</li>
+              <li><strong>alarms</strong>: Auto-sync with Google Sheets</li>
+              <li><strong>activeTab</strong>: Quick bookmark from current page</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.install.step3.title">Pin to Toolbar</h4>
+            <p data-i18n="guide.install.step3.desc">Click the puzzle icon in Chrome toolbar, then click the pin icon next to "Focus to GGSheet" for quick access.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.install.step4.title">Open Sidebar</h4>
+            <p data-i18n="guide.install.step4.desc">Click the Focus to GGSheet icon to open the sidebar. You can now start adding tasks, bookmarks, and notes!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 2: Google Sheets Setup -->
+      <div class="guide-section">
+        <h2 data-i18n="guide.notion.title">2. Connect to Google Sheets (Optional)</h2>
+        <p class="mb-3" style="color: var(--gray-500);" data-i18n="guide.notion.intro">Google Sheets sync is optional. The extension works perfectly offline without it. If you want to sync with Google Sheets, follow these steps:</p>
+
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.notion.step1.title">Create Google Sheets Integration</h4>
+            <p data-i18n="guide.notion.step1.desc">Go to Google Sheets's integration page and create a new integration:</p>
+            <a href="https://www.notion.so/my-integrations" class="btn btn-secondary mt-4" target="_blank">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+              </svg>
+              notion.so/my-integrations
+            </a>
+            <ul style="margin-top: 1rem; margin-left: 1rem; color: var(--gray-600);">
+              <li>Click "+ New integration"</li>
+              <li>Name it "Focus to GGSheet"</li>
+              <li>Select your workspace</li>
+              <li>Click "Submit"</li>
+              <li>Copy the "Internal Integration Token" (starts with <code>secret_</code>)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.notion.step2.title">Create Database in Google Sheets</h4>
+            <p data-i18n="guide.notion.step2.desc">Create a new database in Google Sheets with these properties:</p>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="guide.notion.table.name">Property Name</th>
+                    <th data-i18n="guide.notion.table.type">Type</th>
+                    <th data-i18n="guide.notion.table.desc">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Title</td>
+                    <td>Title</td>
+                    <td data-i18n="guide.notion.prop.title">Item title (default)</td>
+                  </tr>
+                  <tr>
+                    <td>Type</td>
+                    <td>Select</td>
+                    <td data-i18n="guide.notion.prop.type">task, bookmark, note</td>
+                  </tr>
+                  <tr>
+                    <td>Content</td>
+                    <td>Text</td>
+                    <td data-i18n="guide.notion.prop.content">Detailed content</td>
+                  </tr>
+                  <tr>
+                    <td>URL</td>
+                    <td>URL</td>
+                    <td data-i18n="guide.notion.prop.url">Link (for bookmarks)</td>
+                  </tr>
+                  <tr>
+                    <td>Priority</td>
+                    <td>Select</td>
+                    <td data-i18n="guide.notion.prop.priority">high, medium, low</td>
+                  </tr>
+                  <tr>
+                    <td>Deadline</td>
+                    <td>Date</td>
+                    <td data-i18n="guide.notion.prop.deadline">Due date</td>
+                  </tr>
+                  <tr>
+                    <td>Completed</td>
+                    <td>Checkbox</td>
+                    <td data-i18n="guide.notion.prop.completed">Task completion status</td>
+                  </tr>
+                  <tr>
+                    <td>Tags</td>
+                    <td>Multi-select</td>
+                    <td data-i18n="guide.notion.prop.tags">Labels</td>
+                  </tr>
+                  <tr>
+                    <td>LocalID</td>
+                    <td>Text</td>
+                    <td data-i18n="guide.notion.prop.localid">Local ID for sync</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.notion.step3.title">Share Database with Integration</h4>
+            <p data-i18n="guide.notion.step3.desc">Open your database in Google Sheets, then:</p>
+            <ul style="margin-top: 1rem; margin-left: 1rem; color: var(--gray-600);">
+              <li>Click "..." (top right corner)</li>
+              <li>Select "Connections"</li>
+              <li>Find and select "Focus to GGSheet"</li>
+              <li>Confirm sharing</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.notion.step4.title">Get Database ID</h4>
+            <p data-i18n="guide.notion.step4.desc">Open your database in browser and copy the Database ID from URL:</p>
+            <div class="code-block">
+              https://www.notion.so/workspace/<strong style="color: #10b981;">abc123def456...</strong>?v=...
+            </div>
+            <p style="margin-top: 0.5rem; color: var(--gray-500); font-size: 0.9rem;" data-i18n="guide.notion.step4.hint">The Database ID is the 32-character string after your workspace name and before "?v="</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.notion.step5.title">Configure in Extension</h4>
+            <p data-i18n="guide.notion.step5.desc">Open the extension sidebar, go to Settings (gear icon), then:</p>
+            <ul style="margin-top: 1rem; margin-left: 1rem; color: var(--gray-600);">
+              <li data-i18n="guide.notion.step5.f1">Paste your Integration Token</li>
+              <li data-i18n="guide.notion.step5.f2">Paste your Database ID</li>
+              <li data-i18n="guide.notion.step5.f3">Click "Test" to verify connection</li>
+              <li data-i18n="guide.notion.step5.f4">Click "Save" to save settings</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">6</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.notion.step6.title">Start Syncing!</h4>
+            <p data-i18n="guide.notion.step6.desc">The extension will automatically sync every 5 minutes. You can also click the sync icon in the header to sync manually.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="guide-section">
+        <h2 data-i18n="guide.faq.title">Frequently Asked Questions</h2>
+
+        <div class="step">
+          <div class="step-number">?</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.faq.q1">Will I lose data if I uninstall the extension?</h4>
+            <p data-i18n="guide.faq.a1">Data is stored in Chrome's IndexedDB. If you clear browser data, local data will be lost. Connect to Google Sheets for backup.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">?</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.faq.q2">Why does Google Sheets connection fail?</h4>
+            <p data-i18n="guide.faq.a2">Check: (1) Token is correct and not expired, (2) Database ID format is correct, (3) Database is shared with your integration.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">?</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.faq.q3">How do I know sync is working?</h4>
+            <p data-i18n="guide.faq.a3">The sync icon in the header spins during sync. Check "Last synced" timestamp in Settings.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">?</div>
+          <div class="step-content">
+            <h4 data-i18n="guide.faq.q4">Can I use multiple Google Sheets databases?</h4>
+            <p data-i18n="guide.faq.a4">Currently supports one database for items (tasks/bookmarks/notes) and one for prompts. Multi-database support is planned.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <h2 data-i18n="guide.cta.title">Ready to Get Started?</h2>
+      <p data-i18n="guide.cta.subtitle">Install Focus to GGSheet now and transform your browsing experience.</p>
+      <a href="https://chromewebstore.google.com/detail/focus-to-notion" class="btn btn-primary btn-lg" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+        <span data-i18n="cta.button">Install Now - It's Free</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2024 Focus to GGSheet. <span data-i18n="footer.credit">Made by</span> <a href="https://binhvuong.vn" target="_blank">Binh Vuong AI Marketing</a></p>
+        <ul class="footer-links">
+          <li><a href="https://github.com/vuongnguyenbinh/Google SheetsEX" target="_blank">GitHub</a></li>
+          <li><a href="mailto:contact@binhvuong.vn" data-i18n="footer.contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/i18n.js"></script>
+</body>
+</html>

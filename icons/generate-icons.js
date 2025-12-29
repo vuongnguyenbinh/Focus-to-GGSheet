@@ -15,7 +15,7 @@ const path = require('path');
 const sizes = [16, 32, 48, 128];
 const brandColor = '#DA251D';
 
-console.log('Icon Generator for Notion Sidebar');
+console.log('Icon Generator for Focus to GGSheet');
 console.log('==================================\n');
 
 // Create minimal valid PNG files with red background and white "N"

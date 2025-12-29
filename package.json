@@ -1,6 +1,6 @@
 {
-  "name": "focus-to-notion",
-  "version": "1.0.0",
+  "name": "focus-to-ggsheet",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,7 @@
   },
   "keywords": [
     "chrome-extension",
-    "notion",
+    "google-sheets",
     "sidebar",
     "tasks",
     "bookmarks",
@@ -19,7 +19,7 @@
   ],
   "author": "Binh Vuong AI Marketing",
   "license": "MIT",
-  "description": "Stay focused while browsing and save everything to Notion",
+  "description": "Stay focused while browsing and save everything to Google Sheets",
   "dependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.54.0",
     "dexie": "^4.2.1",
